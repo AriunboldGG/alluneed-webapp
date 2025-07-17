@@ -39,7 +39,7 @@ const Navbar = () => {
         <div className="flex justify-between items-center h-28">
           {/* Left Side - Logo */}
           <div className="flex items-center">
-            <Link href="/" className="flex items-center space-x-2">
+            <Link href="/calculation" className="flex items-center space-x-2">
               <img src="/icons/svg/mainlogo.svg" alt="Alluneed" className="h-14 w-14" />
               <span className="text-xl font-bold text-gray-900">Alluneed</span>
             </Link>
@@ -85,10 +85,10 @@ const Navbar = () => {
             {/* Desktop Login Button */}
             <div className="hidden lg:flex items-center">
               {!isLoggedIn ? (
-                <button className="bg-black text-white px-4 py-2 rounded-2xl flex items-center space-x-2 hover:bg-[#09090B] transition-colors cursor-pointer">
+                <Link href="/login" className="bg-black text-white px-4 py-2 rounded-2xl flex items-center space-x-2 hover:bg-[#09090B] transition-colors cursor-pointer">
                   <span className="text-sm font-medium">Нэвтрэх</span>
                   <img src="/icons/svg/userlogin.svg" alt="Login" className="w-5 h-5" />
-                </button>
+                </Link>
               ) : (
                 <div className="flex items-center space-x-2">
                   <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">
@@ -157,10 +157,10 @@ const Navbar = () => {
               {/* Mobile Login Button */}
               <div className="pt-4 border-t border-gray-200">
                 {!isLoggedIn ? (
-                  <button className="w-full bg-black text-white px-4 py-3 rounded-2xl flex items-center justify-center space-x-2 hover:bg-[#09090B] transition-colors cursor-pointer">
+                  <Link href="/login" className="w-full bg-black text-white px-4 py-3 rounded-2xl flex items-center justify-center space-x-2 hover:bg-[#09090B] transition-colors cursor-pointer">
                     <span className="text-sm font-medium">Нэвтрэх</span>
                     <img src="/icons/svg/userlogin.svg" alt="Login" className="w-5 h-5" />
-                  </button>
+                  </Link>
                 ) : (
                   <div className="flex items-center space-x-3 p-3 rounded-lg bg-gray-50">
                     <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">

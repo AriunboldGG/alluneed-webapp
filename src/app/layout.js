@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "AllYouNeed - Your All-in-One Platform",
+  title: "AllYouNeed - Marketing Hub Platform",
   description: "Your comprehensive platform for everything you need. Streamline your workflow and achieve your goals.",
 };
 
