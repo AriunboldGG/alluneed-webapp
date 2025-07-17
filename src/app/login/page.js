@@ -116,7 +116,7 @@ export default function LoginPage() {
               
               <div className="mt-4 text-center text-sm">
                 <p className="text-gray-500">
-                  Don't have an account? Contact us to get your credentials.
+                  Don&apos;t have an account? Contact us to get your credentials.
                 </p>
               </div>
             </div>
