@@ -1,0 +1,14 @@
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="currentColor" stroke-width="2" fill="none"/>
+  <circle cx="9" cy="10" r="1" fill="currentColor"/>
+  <circle cx="15" cy="10" r="1" fill="currentColor"/>
+  <path d="M9 14h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+  <path d="M12 2v2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+  <path d="M4.93 4.93l1.41 1.41" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+  <path d="M2 12h2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+  <path d="M4.93 19.07l1.41-1.41" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+  <path d="M12 22v-2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+  <path d="M19.07 19.07l-1.41-1.41" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+  <path d="M22 12h-2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+  <path d="M19.07 4.93l-1.41 1.41" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+</svg> 
