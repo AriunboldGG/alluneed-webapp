@@ -25,55 +25,63 @@ const Popup = dynamic(
 );
 
 const Map = ({ billboards = [] }) => {
+  const [customIcon, setCustomIcon] = React.useState(null);
+  
   // Default center (Ulaanbaatar coordinates)
   const defaultCenter = [47.9184, 106.9177];
   
   // Create custom marker icon only on client side
-  const createCustomIcon = () => {
-    if (typeof window !== 'undefined') {
-      const L = require('leaflet');
-      return L.divIcon({
-        className: 'custom-marker',
-        html: `
-          <div style="
-            width: 25px;
-            height: 41px;
-            background: #EF4444;
-            border-radius: 50% 50% 50% 0;
-            transform: rotate(-45deg);
-            margin: -20px -12px;
-            position: relative;
-          ">
-            <div style="
-              width: 15px;
-              height: 15px;
-              background: white;
-              border-radius: 50%;
-              position: absolute;
-              top: 3px;
-              left: 5px;
-            ">
+  React.useEffect(() => {
+    const createCustomIcon = async () => {
+      if (typeof window !== 'undefined') {
+        try {
+          const L = await import('leaflet');
+          const icon = L.default.divIcon({
+            className: 'custom-marker',
+            html: `
               <div style="
-                width: 9px;
-                height: 9px;
+                width: 25px;
+                height: 41px;
                 background: #EF4444;
-                border-radius: 50%;
-                position: absolute;
-                top: 3px;
-                left: 3px;
-              "></div>
-            </div>
-          </div>
-        `,
-        iconSize: [25, 41],
-        iconAnchor: [12, 41],
-        popupAnchor: [1, -34],
-      });
-    }
-    return null;
-  };
-  
-  const customIcon = createCustomIcon();
+                border-radius: 50% 50% 50% 0;
+                transform: rotate(-45deg);
+                margin: -20px -12px;
+                position: relative;
+              ">
+                <div style="
+                  width: 15px;
+                  height: 15px;
+                  background: white;
+                  border-radius: 50%;
+                  position: absolute;
+                  top: 3px;
+                  left: 5px;
+                ">
+                  <div style="
+                    width: 9px;
+                    height: 9px;
+                    background: #EF4444;
+                    border-radius: 50%;
+                    position: absolute;
+                    top: 3px;
+                    left: 3px;
+                  "></div>
+                </div>
+              </div>
+            `,
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34],
+          });
+          setCustomIcon(icon);
+        } catch (error) {
+          console.error('Error loading Leaflet:', error);
+        }
+      }
+    };
+    
+    createCustomIcon();
+  }, []);
 
   return (
     <div className="w-full h-full">
