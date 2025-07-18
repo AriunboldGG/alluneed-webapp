@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Card, CardContent } from '@/components/ui/card';
 
 const AIChatPage = () => {
   const [chats, setChats] = useState([]);
@@ -285,7 +284,7 @@ const AIChatPage = () => {
                 </svg>
               </div>
               <h3 className="text-lg font-medium mb-2">Start a new conversation</h3>
-              <p>Ask me anything and I'll help you out!</p>
+              <p>Ask me anything and I&apos;ll help you out!</p>
             </div>
           ) : (
             messages.map((message) => (
