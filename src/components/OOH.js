@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { addToCalculator } from '@/lib/calculator';
 
 const OOH = () => {
   const [selectedProvider, setSelectedProvider] = useState('JCDecaux');
@@ -225,7 +226,21 @@ const OOH = () => {
             </CardContent>
 
             <CardFooter className="pt-4">
-              <button className="w-full bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-[999px] text-sm font-medium hover:bg-[#09090B] hover:text-white transition-colors cursor-pointer flex items-center justify-center space-x-2">
+              <button 
+                className="w-full bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-[999px] text-sm font-medium hover:bg-[#09090B] hover:text-white transition-colors cursor-pointer flex items-center justify-center space-x-2"
+                onClick={() => addToCalculator({ 
+                  id: pkg.id,
+                  type: 'ooh', 
+                  name: `${pkg.name} / ${pkg.nameMongolian}`,
+                  provider: selectedProvider,
+                  busStops: pkg.data.busStop,
+                  infoFacilities: pkg.data.infoFacility,
+                  columns: pkg.data.column,
+                  flagpoleFacilities: pkg.data.flagFacility,
+                  totalFacilities: pkg.data.totalFacility,
+                  area: pkg.data.area
+                })}
+              >
                 <img src="/icons/svg/plus.svg" alt="Add" className="w-5 h-5" />
                 <span>Add</span>
               </button>

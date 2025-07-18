@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
+import { addToCalculator } from '@/lib/calculator';
 
 const TVChannels = () => {
   const [selectedTimeFilter, setSelectedTimeFilter] = useState('One day');
@@ -129,7 +130,18 @@ const TVChannels = () => {
                 <button className="flex-1 bg-white border border-gray-300 text-gray-700 px-3 py-2 rounded-lg text-sm font-medium hover:bg-[#09090B] hover:text-white transition-colors cursor-pointer">
                   View details
                 </button>
-                <button className="flex-1 bg-white border border-gray-300 text-gray-700 px-3 py-2 rounded-lg text-sm font-medium hover:bg-[#09090B] hover:text-white transition-colors flex items-center justify-center space-x-1 cursor-pointer">
+                <button 
+                  className="flex-1 bg-white border border-gray-300 text-gray-700 px-3 py-2 rounded-lg text-sm font-medium hover:bg-[#09090B] hover:text-white transition-colors flex items-center justify-center space-x-1 cursor-pointer"
+                  onClick={() => addToCalculator({ 
+                    id: channel.id,
+                    type: 'tv', 
+                    name: channel.name,
+                    providers: channel.platforms,
+                    views: parseInt(channel.avgViews.replace(',', '')),
+                    cost: parseInt(channel.costPerView.match(/₮([\d,]+)/)[1].replace(',', '')),
+                    timeFilter: selectedTimeFilter.toLowerCase().replace(' ', '-')
+                  })}
+                >
                   <img src="/icons/svg/plus.svg" alt="Add" className="w-5 h-5" />
                   <span>Add</span>
                 </button>

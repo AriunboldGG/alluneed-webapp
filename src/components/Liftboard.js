@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import GoogleMapComponent from './GoogleMapComponent';
+import { addToCalculator } from '@/lib/calculator';
 
 const Liftboard = () => {
   const [selectedTimeFilter, setSelectedTimeFilter] = useState('daily');
@@ -172,7 +173,20 @@ const Liftboard = () => {
                       </div>
                     </div>
                     <div className="flex space-x-2 flex-shrink-0">
-                      <Button size="sm" variant="secondary" className="w-8 h-8 p-0 rounded-full">
+                      <Button 
+                        size="sm" 
+                        variant="secondary" 
+                        className="w-8 h-8 p-0 rounded-full"
+                        onClick={() => addToCalculator({ 
+                          id: liftboard.id,
+                          type: 'liftboard', 
+                          name: liftboard.name,
+                          location: liftboard.location,
+                          duration: 'Daily',
+                          dailyViews: parseInt(liftboard.views.replace(',', '')),
+                          cost: parseInt(liftboard.costPerView.replace('₮', '').replace(',', ''))
+                        })}
+                      >
                         <img src="/icons/svg/bill-plus.svg" alt="Add" className="w-4 h-4" />
                       </Button>
                       <Button size="sm" variant="secondary" className="w-8 h-8 p-0 rounded-full">

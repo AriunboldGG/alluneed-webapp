@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import Map from './Map';
+import { addToCalculator } from '@/lib/calculator';
 
 const Billboard = () => {
   const [selectedTimeFilter, setSelectedTimeFilter] = useState('Day');
@@ -99,7 +100,18 @@ const Billboard = () => {
                       </div>
                     </div>
                     <div className="flex space-x-1 sm:space-x-2 flex-shrink-0">
-                      <button className="p-1.5 sm:p-2 bg-gray-800 hover:bg-gray-900 rounded-full transition-colors cursor-pointer">
+                      <button 
+                        className="p-1.5 sm:p-2 bg-gray-800 hover:bg-gray-900 rounded-full transition-colors cursor-pointer"
+                        onClick={() => addToCalculator({ 
+                          id: billboard.id,
+                          type: 'billboard', 
+                          name: billboard.name,
+                          location: billboard.location,
+                          size: 'Standard',
+                          dailyViews: parseInt(billboard.views.replace(',', '')),
+                          cost: parseInt(billboard.costPerView.match(/₮([\d,]+)/)[1].replace(',', ''))
+                        })}
+                      >
                         <img src="/icons/svg/bill-plus.svg" alt="Add" className="w-3 h-3 sm:w-4 sm:h-4" />
                       </button>
                       <button className="p-1.5 sm:p-2 bg-gray-800 hover:bg-gray-900 rounded-full transition-colors cursor-pointer">
