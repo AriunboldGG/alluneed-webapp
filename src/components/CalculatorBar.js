@@ -70,7 +70,7 @@ const CalculatorBar = () => {
           {/* Right Section - View Button */}
           <Button 
             onClick={handleViewClick}
-            className="bg-purple-600 hover:bg-purple-700 text-white rounded-full px-4 py-2 flex items-center space-x-2 transition-colors"
+            className="bg-purple-600 hover:bg-purple-700 text-white rounded-full px-4 py-2 flex items-center space-x-2 transition-colors cursor-pointer"
           >
             <span className="text-sm font-medium">View</span>
             <img 

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -9,7 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 const CalculationModal = ({ isOpen, onClose, calculatorItems }) => {
-  const [activeTab, setActiveTab] = useState('map');
+  const [activeTab, setActiveTab] = useState('config');
   const [broadcastTime, setBroadcastTime] = useState('17:00-00:00');
   const [broadcastDays, setBroadcastDays] = useState('');
   const [broadcastDuration, setBroadcastDuration] = useState('');
@@ -25,6 +25,28 @@ const CalculationModal = ({ isOpen, onClose, calculatorItems }) => {
   const totalCost = calculatorItems.reduce((sum, item) => sum + (item.cost || 0), 0);
   const totalViews = calculatorItems.reduce((sum, item) => sum + (item.views || 0), 0);
 
+  // Determine which categories have items
+  const selectedCategories = {};
+  if (tvChannels.length > 0) selectedCategories.tv = true;
+  if (oohItems.length > 0) selectedCategories.ooh = true;
+  if (billboardItems.length > 0) selectedCategories.billboard = true;
+  if (liftboardItems.length > 0) selectedCategories.liftboard = true;
+
+  // Set default active tab based on available categories
+  useEffect(() => {
+    if (Object.keys(selectedCategories).length > 0) {
+      setActiveTab('all');
+    } else if (tvChannels.length > 0) {
+      setActiveTab('tv');
+    } else if (oohItems.length > 0) {
+      setActiveTab('ooh');
+    } else if (billboardItems.length > 0) {
+      setActiveTab('billboard');
+    } else if (liftboardItems.length > 0) {
+      setActiveTab('liftboard');
+    }
+  }, [calculatorItems]);
+
   if (!isOpen) return null;
 
   return (
@@ -36,10 +58,10 @@ const CalculationModal = ({ isOpen, onClose, calculatorItems }) => {
           </h2>
           <div className="flex items-center space-x-4">
             <button
-              onClick={() => setActiveTab(activeTab === 'map' ? 'config' : 'map')}
-              className="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm font-medium transition-colors"
+              onClick={() => setActiveTab(activeTab === 'config' ? 'map' : 'config')}
+              className="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm font-medium transition-colors cursor-pointer"
             >
-              {activeTab === 'map' ? 'Configuration' : 'Map'}
+              {activeTab === 'config' ? 'Map' : 'Configuration'}
             </button>
             <button
               onClick={onClose}
@@ -269,30 +291,25 @@ const CalculationModal = ({ isOpen, onClose, calculatorItems }) => {
             )}
           </div>
 
-          {/* Right Column - Map or Configuration */}
-          {activeTab === 'map' ? (
-            <div className="flex-1 overflow-hidden">
-              <div className="h-full bg-gray-100 rounded-lg relative z-0">
-                <div className="w-full h-full flex items-center justify-center text-gray-500">
-                  <div className="text-center">
-                    <div className="w-16 h-16 mx-auto mb-4 bg-gray-200 rounded-full flex items-center justify-center">
-                      <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-1.447-.894L15 4m0 13V4m-6 3l6-3" />
-                      </svg>
-                    </div>
-                    <p className="text-lg font-medium">Interactive Map</p>
-                    <p className="text-sm">Showing selected locations</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ) : (
-            <div className="flex-1 space-y-6 overflow-y-auto pr-4">
+          {/* Right Column - Configuration */}
+          <div className="w-1/4 space-y-6 overflow-y-auto pr-4">
             <Tabs value={activeTab} onValueChange={setActiveTab}>
-              <TabsList className="grid w-full grid-cols-3">
-                <TabsTrigger value="all">All</TabsTrigger>
-                <TabsTrigger value="tv">TV</TabsTrigger>
-                <TabsTrigger value="influencer">Influencer</TabsTrigger>
+              <TabsList className="grid w-full grid-cols-{Math.max(1, Object.keys(selectedCategories).length)}">
+                {Object.keys(selectedCategories).length > 0 && (
+                  <TabsTrigger value="all">All</TabsTrigger>
+                )}
+                {tvChannels.length > 0 && (
+                  <TabsTrigger value="tv">TV</TabsTrigger>
+                )}
+                {oohItems.length > 0 && (
+                  <TabsTrigger value="ooh">OOH</TabsTrigger>
+                )}
+                {billboardItems.length > 0 && (
+                  <TabsTrigger value="billboard">Billboard</TabsTrigger>
+                )}
+                {liftboardItems.length > 0 && (
+                  <TabsTrigger value="liftboard">Liftboard</TabsTrigger>
+                )}
               </TabsList>
 
               <TabsContent value="all" className="space-y-6">
@@ -384,6 +401,53 @@ const CalculationModal = ({ isOpen, onClose, calculatorItems }) => {
                 {oohItems.length > 0 && (
                   <div>
                     <h4 className="font-medium mb-3">OOH</h4>
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {oohItems.map((item, index) => (
+                        <Badge key={index} variant="secondary">
+                          OOH ({item.name})
+                        </Badge>
+                      ))}
+                    </div>
+                    <div className="p-4 bg-gray-50 rounded-lg">
+                      <div className="text-center">
+                        <div className="text-sm text-gray-600">Нийт төлбөр / Views</div>
+                        <div className="font-semibold">₮{totalCost.toLocaleString()} / {totalViews.toLocaleString()}+</div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Billboard Summary */}
+                {billboardItems.length > 0 && (
+                  <div>
+                    <h4 className="font-medium mb-3">Billboard</h4>
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {billboardItems.map((item, index) => (
+                        <Badge key={index} variant="secondary">
+                          Billboard ({item.name})
+                        </Badge>
+                      ))}
+                    </div>
+                    <div className="p-4 bg-gray-50 rounded-lg">
+                      <div className="text-center">
+                        <div className="text-sm text-gray-600">Нийт төлбөр / Views</div>
+                        <div className="font-semibold">₮{totalCost.toLocaleString()} / {totalViews.toLocaleString()}+</div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Liftboard Summary */}
+                {liftboardItems.length > 0 && (
+                  <div>
+                    <h4 className="font-medium mb-3">Liftboard</h4>
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {liftboardItems.map((item, index) => (
+                        <Badge key={index} variant="secondary">
+                          Liftboard ({item.name})
+                        </Badge>
+                      ))}
+                    </div>
                     <div className="p-4 bg-gray-50 rounded-lg">
                       <div className="text-center">
                         <div className="text-sm text-gray-600">Нийт төлбөр / Views</div>
@@ -401,15 +465,278 @@ const CalculationModal = ({ isOpen, onClose, calculatorItems }) => {
                 </div>
               </TabsContent>
 
-              <TabsContent value="influencer" className="space-y-6">
-                {/* Influencer-specific configuration */}
-                <div className="text-center text-gray-500 py-8">
-                  Influencer-specific configuration options
-                </div>
+              <TabsContent value="ooh" className="space-y-6">
+                {/* OOH Configuration */}
+                {oohItems.length > 0 && (
+                  <div>
+                    <h4 className="font-medium mb-3">OOH</h4>
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {oohItems.map((item, index) => (
+                        <Badge key={index} variant="secondary">
+                          OOH ({item.name})
+                        </Badge>
+                      ))}
+                    </div>
+                    
+                    <div className="space-y-4">
+                      <div>
+                        <label className="text-sm font-medium mb-2 block">Реклам цацах цаг</label>
+                        <div className="flex gap-2">
+                          <Button
+                            variant={broadcastTime === '17:00-00:00' ? 'default' : 'outline'}
+                            size="sm"
+                            onClick={() => setBroadcastTime('17:00-00:00')}
+                          >
+                            17:00-00:00
+                          </Button>
+                          <Button
+                            variant={broadcastTime === 'other' ? 'default' : 'outline'}
+                            size="sm"
+                            onClick={() => setBroadcastTime('other')}
+                          >
+                            Бусад
+                          </Button>
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="text-sm font-medium mb-2 block">Цацах хоногын тоо</label>
+                        <Input
+                          placeholder="Type here"
+                          value={broadcastDays}
+                          onChange={(e) => setBroadcastDays(e.target.value)}
+                        />
+                      </div>
+
+                      <div>
+                        <label className="text-sm font-medium mb-2 block">Реклам цацах хугацаа</label>
+                        <Input
+                          placeholder="Type here"
+                          value={broadcastDuration}
+                          onChange={(e) => setBroadcastDuration(e.target.value)}
+                        />
+                      </div>
+
+                      <div>
+                        <label className="text-sm font-medium mb-2 block">Байршил</label>
+                        <Select value={location} onValueChange={setLocation}>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Сонгох" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="ulaanbaatar">Улаанбаатар</SelectItem>
+                            <SelectItem value="darkhan">Дархан</SelectItem>
+                            <SelectItem value="erdenet">Эрдэнэт</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      {/* Summary Row */}
+                      <div className="grid grid-cols-3 gap-4 p-4 bg-gray-50 rounded-lg">
+                        <div className="text-center">
+                          <div className="text-sm text-gray-600">Төлбөр</div>
+                          <div className="font-semibold">₮{totalCost.toLocaleString()}</div>
+                        </div>
+                        <div className="text-center">
+                          <div className="text-sm text-gray-600">Авч үзэлт</div>
+                          <div className="font-semibold">+{totalViews.toLocaleString()}</div>
+                        </div>
+                        <div className="text-center">
+                          <div className="text-sm text-gray-600">Хугацаа</div>
+                          <div className="font-semibold">6 мин</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </TabsContent>
+
+              <TabsContent value="billboard" className="space-y-6">
+                {/* Billboard Configuration */}
+                {billboardItems.length > 0 && (
+                  <div>
+                    <h4 className="font-medium mb-3">Billboard</h4>
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {billboardItems.map((item, index) => (
+                        <Badge key={index} variant="secondary">
+                          Billboard ({item.name})
+                        </Badge>
+                      ))}
+                    </div>
+                    
+                    <div className="space-y-4">
+                      <div>
+                        <label className="text-sm font-medium mb-2 block">Реклам цацах цаг</label>
+                        <div className="flex gap-2">
+                          <Button
+                            variant={broadcastTime === '17:00-00:00' ? 'default' : 'outline'}
+                            size="sm"
+                            onClick={() => setBroadcastTime('17:00-00:00')}
+                          >
+                            17:00-00:00
+                          </Button>
+                          <Button
+                            variant={broadcastTime === 'other' ? 'default' : 'outline'}
+                            size="sm"
+                            onClick={() => setBroadcastTime('other')}
+                          >
+                            Бусад
+                          </Button>
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="text-sm font-medium mb-2 block">Цацах хоногын тоо</label>
+                        <Input
+                          placeholder="Type here"
+                          value={broadcastDays}
+                          onChange={(e) => setBroadcastDays(e.target.value)}
+                        />
+                      </div>
+
+                      <div>
+                        <label className="text-sm font-medium mb-2 block">Реклам цацах хугацаа</label>
+                        <Input
+                          placeholder="Type here"
+                          value={broadcastDuration}
+                          onChange={(e) => setBroadcastDuration(e.target.value)}
+                        />
+                      </div>
+
+                      <div>
+                        <label className="text-sm font-medium mb-2 block">Байршил</label>
+                        <Select value={location} onValueChange={setLocation}>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Сонгох" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="ulaanbaatar">Улаанбаатар</SelectItem>
+                            <SelectItem value="darkhan">Дархан</SelectItem>
+                            <SelectItem value="erdenet">Эрдэнэт</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      {/* Summary Row */}
+                      <div className="grid grid-cols-3 gap-4 p-4 bg-gray-50 rounded-lg">
+                        <div className="text-center">
+                          <div className="text-sm text-gray-600">Төлбөр</div>
+                          <div className="font-semibold">₮{totalCost.toLocaleString()}</div>
+                        </div>
+                        <div className="text-center">
+                          <div className="text-sm text-gray-600">Авч үзэлт</div>
+                          <div className="font-semibold">+{totalViews.toLocaleString()}</div>
+                        </div>
+                        <div className="text-center">
+                          <div className="text-sm text-gray-600">Хугацаа</div>
+                          <div className="font-semibold">6 мин</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </TabsContent>
+
+              <TabsContent value="liftboard" className="space-y-6">
+                {/* Liftboard Configuration */}
+                {liftboardItems.length > 0 && (
+                  <div>
+                    <h4 className="font-medium mb-3">Liftboard</h4>
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {liftboardItems.map((item, index) => (
+                        <Badge key={index} variant="secondary">
+                          Liftboard ({item.name})
+                        </Badge>
+                      ))}
+                    </div>
+                    
+                    <div className="space-y-4">
+                      <div>
+                        <label className="text-sm font-medium mb-2 block">Реклам цацах цаг</label>
+                        <div className="flex gap-2">
+                          <Button
+                            variant={broadcastTime === '17:00-00:00' ? 'default' : 'outline'}
+                            size="sm"
+                            onClick={() => setBroadcastTime('17:00-00:00')}
+                          >
+                            17:00-00:00
+                          </Button>
+                          <Button
+                            variant={broadcastTime === 'other' ? 'default' : 'outline'}
+                            size="sm"
+                            onClick={() => setBroadcastTime('other')}
+                          >
+                            Бусад
+                          </Button>
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="text-sm font-medium mb-2 block">Цацах хоногын тоо</label>
+                        <Input
+                          placeholder="Type here"
+                          value={broadcastDays}
+                          onChange={(e) => setBroadcastDays(e.target.value)}
+                        />
+                      </div>
+
+                      <div>
+                        <label className="text-sm font-medium mb-2 block">Реклам цацах хугацаа</label>
+                        <Input
+                          placeholder="Type here"
+                          value={broadcastDuration}
+                          onChange={(e) => setBroadcastDuration(e.target.value)}
+                        />
+                      </div>
+
+                      <div>
+                        <label className="text-sm font-medium mb-2 block">Байршил</label>
+                        <Select value={location} onValueChange={setLocation}>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Сонгох" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="ulaanbaatar">Улаанбаатар</SelectItem>
+                            <SelectItem value="darkhan">Дархан</SelectItem>
+                            <SelectItem value="erdenet">Эрдэнэт</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      {/* Summary Row */}
+                      <div className="grid grid-cols-3 gap-4 p-4 bg-gray-50 rounded-lg">
+                        <div className="text-center">
+                          <div className="text-sm text-gray-600">Төлбөр</div>
+                          <div className="font-semibold">₮{totalCost.toLocaleString()}</div>
+                        </div>
+                        <div className="text-center">
+                          <div className="text-sm text-gray-600">Авч үзэлт</div>
+                          <div className="font-semibold">+{totalViews.toLocaleString()}</div>
+                        </div>
+                        <div className="text-center">
+                          <div className="text-sm text-gray-600">Хугацаа</div>
+                          <div className="font-semibold">6 мин</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </TabsContent>
             </Tabs>
+
+            {/* Total Cost Summary - Bottom of Right Sidebar */}
+            <div className="mt-8 p-4 bg-gray-50 rounded-lg border">
+              <h4 className="font-medium mb-3 text-center">Нийт төлбөр / Views</h4>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-blue-600 mb-2">
+                  ₮{totalCost.toLocaleString()} / {totalViews.toLocaleString()}+
+                </div>
+                <div className="text-sm text-gray-600">
+                  {totalItems} items selected
+                </div>
+              </div>
             </div>
-          )}
+          </div>
         </div>
 
         {/* Footer Actions */}
