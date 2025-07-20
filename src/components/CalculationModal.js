@@ -50,35 +50,35 @@ const CalculationModal = ({ isOpen, onClose, calculatorItems }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[9999] bg-black bg-opacity-50 flex items-center justify-center">
-      <div className="w-full h-full bg-[#F4F4F5] flex flex-col relative z-[10000]">
-        <div className="p-6 border-b flex justify-between items-center bg-white">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
-              <img src="/icons/svg/calculator.svg" alt="Calculator" className="w-5 h-5" />
+    <div className="fixed inset-0 z-[9999] bg-black bg-opacity-50 flex items-center justify-center p-4">
+      <div className="w-full max-w-7xl h-full max-h-[90vh] bg-[#F4F4F5] flex flex-col relative z-[10000] rounded-lg overflow-hidden">
+        <div className="p-4 sm:p-6 border-b flex justify-between items-center bg-white">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <div className="w-6 h-6 sm:w-8 sm:h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+              <img src="/icons/svg/calculator.svg" alt="Calculator" className="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
-            <h2 className="text-xl font-semibold text-gray-800">
+            <h2 className="text-lg sm:text-xl font-semibold text-gray-800">
               Calculation Bag ({totalItems})
             </h2>
           </div>
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-2 sm:space-x-4">
             <button
               onClick={onClose}
-              className="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+              className="w-6 h-6 sm:w-8 sm:h-8 flex items-center justify-center text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
             >
-              <img src="/icons/svg/calc-clear.svg" alt="Close" className="w-5 h-5" />
+              <img src="/icons/svg/calc-clear.svg" alt="Close" className="w-4 h-4 sm:w-5 sm:h-5" />
             </button>
           </div>
         </div>
 
-        <div className="flex-1 flex flex-col xl:flex-row gap-8 p-8 overflow-hidden">
+        <div className="flex-1 flex flex-col lg:flex-row gap-4 sm:gap-6 lg:gap-8 p-4 sm:p-6 lg:p-8 overflow-hidden">
           {/* Left Column - Items */}
-          <div className="flex-1 space-y-6 overflow-y-auto pr-4">
+          <div className="flex-1 space-y-4 sm:space-y-6 overflow-y-auto pr-0 sm:pr-4">
             {/* TV Channels Section */}
             {tvChannels.length > 0 && (
               <div>
-                <h3 className="text-lg font-medium mb-4">TV Channels ({tvChannels.length})</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                <h3 className="text-base sm:text-lg font-medium mb-3 sm:mb-4">TV Channels ({tvChannels.length})</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
                   {tvChannels.map((item, index) => (
                     <Card key={index} className="relative hover:shadow-lg transition-shadow duration-200 border-2 hover:border-blue-200">
                       <CardContent className="p-4">
@@ -134,8 +134,8 @@ const CalculationModal = ({ isOpen, onClose, calculatorItems }) => {
             {/* OOH Section */}
             {oohItems.length > 0 && (
               <div>
-                <h3 className="text-lg font-medium mb-4">OOH ({oohItems.length})</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                <h3 className="text-base sm:text-lg font-medium mb-3 sm:mb-4">OOH ({oohItems.length})</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
                   {oohItems.map((item, index) => (
                     <Card key={index}>
                       <CardContent className="p-4">
@@ -196,8 +196,8 @@ const CalculationModal = ({ isOpen, onClose, calculatorItems }) => {
             {/* Billboard Section */}
             {billboardItems.length > 0 && (
               <div>
-                <h3 className="text-lg font-medium mb-4">Billboard ({billboardItems.length})</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                <h3 className="text-base sm:text-lg font-medium mb-3 sm:mb-4">Billboard ({billboardItems.length})</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
                   {billboardItems.map((item, index) => (
                     <Card key={index}>
                       <CardContent className="p-4">
@@ -247,8 +247,8 @@ const CalculationModal = ({ isOpen, onClose, calculatorItems }) => {
             {/* Liftboard Section */}
             {liftboardItems.length > 0 && (
               <div>
-                <h3 className="text-lg font-medium mb-4">Liftboard ({liftboardItems.length})</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                <h3 className="text-base sm:text-lg font-medium mb-3 sm:mb-4">Liftboard ({liftboardItems.length})</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
                   {liftboardItems.map((item, index) => (
                     <Card key={index}>
                       <CardContent className="p-4">
@@ -297,13 +297,13 @@ const CalculationModal = ({ isOpen, onClose, calculatorItems }) => {
           </div>
 
           {/* Right Column - Configuration */}
-          <div className="w-1/4 space-y-6 overflow-y-auto pr-4 bg-white p-6 rounded-lg">
-            <div className="border-b border-gray-200 pb-2 mb-6">
-              <div className="flex gap-6">
+          <div className="w-full lg:w-1/3 xl:w-1/4 space-y-4 sm:space-y-6 overflow-y-auto bg-white p-4 sm:p-6 rounded-lg">
+            <div className="border-b border-gray-200 pb-2 mb-4 sm:mb-6">
+              <div className="flex gap-3 sm:gap-6 overflow-x-auto">
                 {Object.keys(selectedCategories).length > 0 && (
                   <button
                     onClick={() => setActiveTab('all')}
-                    className={`text-sm font-medium pb-2 border-b-2 transition-colors ${
+                    className={`text-xs sm:text-sm font-medium pb-2 border-b-2 transition-colors whitespace-nowrap ${
                       activeTab === 'all' 
                         ? 'text-gray-900 border-gray-900' 
                         : 'text-gray-500 border-transparent hover:text-gray-700'
@@ -315,7 +315,7 @@ const CalculationModal = ({ isOpen, onClose, calculatorItems }) => {
                 {tvChannels.length > 0 && (
                   <button
                     onClick={() => setActiveTab('tv')}
-                    className={`text-sm font-medium pb-2 border-b-2 transition-colors ${
+                    className={`text-xs sm:text-sm font-medium pb-2 border-b-2 transition-colors whitespace-nowrap ${
                       activeTab === 'tv' 
                         ? 'text-gray-900 border-gray-900' 
                         : 'text-gray-500 border-transparent hover:text-gray-700'
@@ -327,7 +327,7 @@ const CalculationModal = ({ isOpen, onClose, calculatorItems }) => {
                 {oohItems.length > 0 && (
                   <button
                     onClick={() => setActiveTab('ooh')}
-                    className={`text-sm font-medium pb-2 border-b-2 transition-colors ${
+                    className={`text-xs sm:text-sm font-medium pb-2 border-b-2 transition-colors whitespace-nowrap ${
                       activeTab === 'ooh' 
                         ? 'text-gray-900 border-gray-900' 
                         : 'text-gray-500 border-transparent hover:text-gray-700'
@@ -339,7 +339,7 @@ const CalculationModal = ({ isOpen, onClose, calculatorItems }) => {
                 {billboardItems.length > 0 && (
                   <button
                     onClick={() => setActiveTab('billboard')}
-                    className={`text-sm font-medium pb-2 border-b-2 transition-colors ${
+                    className={`text-xs sm:text-sm font-medium pb-2 border-b-2 transition-colors whitespace-nowrap ${
                       activeTab === 'billboard' 
                         ? 'text-gray-900 border-gray-900' 
                         : 'text-gray-500 border-transparent hover:text-gray-700'
@@ -351,7 +351,7 @@ const CalculationModal = ({ isOpen, onClose, calculatorItems }) => {
                 {liftboardItems.length > 0 && (
                   <button
                     onClick={() => setActiveTab('liftboard')}
-                    className={`text-sm font-medium pb-2 border-b-2 transition-colors ${
+                    className={`text-xs sm:text-sm font-medium pb-2 border-b-2 transition-colors whitespace-nowrap ${
                       activeTab === 'liftboard' 
                         ? 'text-gray-900 border-gray-900' 
                         : 'text-gray-500 border-transparent hover:text-gray-700'
@@ -364,7 +364,7 @@ const CalculationModal = ({ isOpen, onClose, calculatorItems }) => {
             </div>
 
                           {activeTab === 'all' && (
-              <div className="space-y-6">
+              <div className="space-y-4 sm:space-y-6">
                 {/* TV Channels Configuration */}
                 {tvChannels.length > 0 && (
                   <div>
@@ -512,7 +512,7 @@ const CalculationModal = ({ isOpen, onClose, calculatorItems }) => {
             )}
 
             {activeTab === 'tv' && (
-              <div className="space-y-6">
+              <div className="space-y-4 sm:space-y-6">
                 {/* TV Configuration */}
                 {tvChannels.length > 0 && (
                   <div>
@@ -600,7 +600,7 @@ const CalculationModal = ({ isOpen, onClose, calculatorItems }) => {
             )}
 
             {activeTab === 'ooh' && (
-              <div className="space-y-6">
+              <div className="space-y-4 sm:space-y-6">
                 {/* OOH Configuration */}
                 {oohItems.length > 0 && (
                   <div>
@@ -688,7 +688,7 @@ const CalculationModal = ({ isOpen, onClose, calculatorItems }) => {
             )}
 
             {activeTab === 'billboard' && (
-              <div className="space-y-6">
+              <div className="space-y-4 sm:space-y-6">
                 {/* Billboard Configuration */}
                 {billboardItems.length > 0 && (
                   <div>
@@ -776,7 +776,7 @@ const CalculationModal = ({ isOpen, onClose, calculatorItems }) => {
             )}
 
             {activeTab === 'liftboard' && (
-              <div className="space-y-6">
+              <div className="space-y-4 sm:space-y-6">
                 {/* Liftboard Configuration */}
                 {liftboardItems.length > 0 && (
                   <div>
@@ -864,29 +864,29 @@ const CalculationModal = ({ isOpen, onClose, calculatorItems }) => {
             )}
 
             {/* Total Cost Summary - Bottom of Right Sidebar */}
-            <div className="mt-8 pt-4 border-t border-gray-200">
-              <div className="flex items-center justify-between">
-                <h4 className="text-sm text-gray-600">Нийт төлбөр / Views</h4>
+            <div className="mt-6 sm:mt-8 pt-4 border-t border-gray-200">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0">
+                <h4 className="text-xs sm:text-sm text-gray-600">Нийт төлбөр / Views</h4>
                 <div className="flex items-center gap-2">
-                  <div className="text-2xl font-bold text-gray-800">
+                  <div className="text-lg sm:text-2xl font-bold text-gray-800">
                     ₮{totalCost.toLocaleString()}
                   </div>
-                  <img src="/icons/svg/slash.svg" alt="Separator" className="w-4 h-4" />
-                  <div className="text-2xl font-bold text-gray-800">
+                  <img src="/icons/svg/slash.svg" alt="Separator" className="w-3 h-3 sm:w-4 sm:h-4" />
+                  <div className="text-lg sm:text-2xl font-bold text-gray-800">
                     {totalViews.toLocaleString()}
                   </div>
-                  <img src="/icons/svg/view-insight.svg" alt="Views" className="w-4 h-4" />
+                  <img src="/icons/svg/view-insight.svg" alt="Views" className="w-3 h-3 sm:w-4 sm:h-4" />
                 </div>
               </div>
             </div>
 
             {/* Action Buttons - Bottom of Right Sidebar */}
-            <div className="mt-4 flex gap-2">
+            <div className="mt-4 flex flex-col sm:flex-row gap-2">
               <Button 
                 variant="outline" 
-                className="flex-1 flex items-center justify-center gap-2 py-3 rounded-full border-gray-300 hover:bg-[#09090B] hover:text-white hover:border-[#09090B] transition-colors cursor-pointer"
+                className="flex-1 flex items-center justify-center gap-2 py-2 sm:py-3 rounded-full border-gray-300 hover:bg-[#09090B] hover:text-white hover:border-[#09090B] transition-colors cursor-pointer text-sm"
               >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <svg width="14" height="14" className="sm:w-4 sm:h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
                   <polyline points="17,21 17,13 7,13 7,21"/>
                   <polyline points="7,3 7,8 15,8"/>
@@ -894,9 +894,9 @@ const CalculationModal = ({ isOpen, onClose, calculatorItems }) => {
                 Хадгалах
               </Button>
               <Button 
-                className="flex-1 flex items-center justify-center gap-2 py-3 bg-[#09090B] hover:bg-[#09090B]/90 rounded-full transition-colors cursor-pointer"
+                className="flex-1 flex items-center justify-center gap-2 py-2 sm:py-3 bg-[#09090B] hover:bg-[#09090B]/90 rounded-full transition-colors cursor-pointer text-sm"
               >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <svg width="14" height="14" className="sm:w-4 sm:h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
                   <polyline points="7,10 12,15 17,10"/>
                   <line x1="12" y1="15" x2="12" y2="3"/>
