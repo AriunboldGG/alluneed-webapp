@@ -51,23 +51,22 @@ const CalculationModal = ({ isOpen, onClose, calculatorItems }) => {
 
   return (
     <div className="fixed inset-0 z-[9999] bg-black bg-opacity-50 flex items-center justify-center">
-      <div className="w-full h-full bg-white flex flex-col relative z-[10000]">
-        <div className="p-6 border-b flex justify-between items-center">
-          <h2 className="text-xl font-semibold">
-            Calculation Bag ({totalItems})
-          </h2>
+      <div className="w-full h-full bg-[#F4F4F5] flex flex-col relative z-[10000]">
+        <div className="p-6 border-b flex justify-between items-center bg-white">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+              <img src="/icons/svg/calculator.svg" alt="Calculator" className="w-5 h-5" />
+            </div>
+            <h2 className="text-xl font-semibold text-gray-800">
+              Calculation Bag ({totalItems})
+            </h2>
+          </div>
           <div className="flex items-center space-x-4">
             <button
-              onClick={() => setActiveTab(activeTab === 'config' ? 'map' : 'config')}
-              className="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm font-medium transition-colors cursor-pointer"
-            >
-              {activeTab === 'config' ? 'Map' : 'Configuration'}
-            </button>
-            <button
               onClick={onClose}
-              className="text-gray-500 hover:text-gray-700 text-2xl"
+              className="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
             >
-              ×
+              <img src="/icons/svg/calc-clear.svg" alt="Close" className="w-5 h-5" />
             </button>
           </div>
         </div>
@@ -81,17 +80,18 @@ const CalculationModal = ({ isOpen, onClose, calculatorItems }) => {
                 <h3 className="text-lg font-medium mb-4">TV Channels ({tvChannels.length})</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                   {tvChannels.map((item, index) => (
-                    <Card key={index} className="relative">
+                    <Card key={index} className="relative hover:shadow-lg transition-shadow duration-200 border-2 hover:border-blue-200">
                       <CardContent className="p-4">
                         <div className="flex justify-between items-start mb-3">
                           <div className="w-12 h-12 bg-gray-200 rounded-lg mb-2"></div>
                           <Button
                             variant="ghost"
                             size="sm"
-                            className="text-gray-500 hover:text-red-500"
+                            className="text-gray-500 hover:text-red-500 flex items-center gap-1"
                             onClick={() => {/* Remove item logic */}}
                           >
-                            ✕ Clear
+                            <img src="/icons/svg/calc-clear.svg" alt="Clear" className="w-4 h-4" />
+                            Clear
                           </Button>
                         </div>
                         <h4 className="font-medium mb-2">{item.name}</h4>
@@ -119,10 +119,12 @@ const CalculationModal = ({ isOpen, onClose, calculatorItems }) => {
                       </CardContent>
                     </Card>
                   ))}
-                  <Card className="border-dashed border-2 border-gray-300 hover:border-gray-400 transition-colors cursor-pointer">
+                  <Card className="border-dashed border-2 border-blue-300 hover:border-blue-400 hover:bg-blue-50 transition-all duration-200 cursor-pointer group">
                     <CardContent className="p-4 flex flex-col items-center justify-center h-full min-h-[200px]">
-                      <div className="text-3xl text-gray-400 mb-2">+</div>
-                      <p className="text-gray-600">Add more</p>
+                      <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-3 group-hover:bg-blue-200 transition-colors">
+                        <img src="/icons/svg/plus.svg" alt="Add" className="w-6 h-6 text-blue-600" />
+                      </div>
+                      <p className="text-blue-600 font-medium">Add more</p>
                     </CardContent>
                   </Card>
                 </div>
@@ -144,10 +146,11 @@ const CalculationModal = ({ isOpen, onClose, calculatorItems }) => {
                           <Button
                             variant="ghost"
                             size="sm"
-                            className="text-gray-500 hover:text-red-500"
+                            className="text-gray-500 hover:text-red-500 flex items-center gap-1"
                             onClick={() => {/* Remove item logic */}}
                           >
-                            ✕ Clear
+                            <img src="/icons/svg/calc-clear.svg" alt="Clear" className="w-4 h-4" />
+                            Clear
                           </Button>
                         </div>
                         <h4 className="font-medium mb-3">{item.name}</h4>
@@ -205,10 +208,11 @@ const CalculationModal = ({ isOpen, onClose, calculatorItems }) => {
                           <Button
                             variant="ghost"
                             size="sm"
-                            className="text-gray-500 hover:text-red-500"
+                            className="text-gray-500 hover:text-red-500 flex items-center gap-1"
                             onClick={() => {/* Remove item logic */}}
                           >
-                            ✕ Clear
+                            <img src="/icons/svg/calc-clear.svg" alt="Clear" className="w-4 h-4" />
+                            Clear
                           </Button>
                         </div>
                         <h4 className="font-medium mb-2">{item.name}</h4>
@@ -255,10 +259,11 @@ const CalculationModal = ({ isOpen, onClose, calculatorItems }) => {
                           <Button
                             variant="ghost"
                             size="sm"
-                            className="text-gray-500 hover:text-red-500"
+                            className="text-gray-500 hover:text-red-500 flex items-center gap-1"
                             onClick={() => {/* Remove item logic */}}
                           >
-                            ✕ Clear
+                            <img src="/icons/svg/calc-clear.svg" alt="Clear" className="w-4 h-4" />
+                            Clear
                           </Button>
                         </div>
                         <h4 className="font-medium mb-2">{item.name}</h4>
@@ -292,27 +297,74 @@ const CalculationModal = ({ isOpen, onClose, calculatorItems }) => {
           </div>
 
           {/* Right Column - Configuration */}
-          <div className="w-1/4 space-y-6 overflow-y-auto pr-4">
-            <Tabs value={activeTab} onValueChange={setActiveTab}>
-              <TabsList className="grid w-full grid-cols-{Math.max(1, Object.keys(selectedCategories).length)}">
+          <div className="w-1/4 space-y-6 overflow-y-auto pr-4 bg-white p-6 rounded-lg">
+            <div className="border-b border-gray-200 pb-2 mb-6">
+              <div className="flex gap-6">
                 {Object.keys(selectedCategories).length > 0 && (
-                  <TabsTrigger value="all">All</TabsTrigger>
+                  <button
+                    onClick={() => setActiveTab('all')}
+                    className={`text-sm font-medium pb-2 border-b-2 transition-colors ${
+                      activeTab === 'all' 
+                        ? 'text-gray-900 border-gray-900' 
+                        : 'text-gray-500 border-transparent hover:text-gray-700'
+                    }`}
+                  >
+                    All
+                  </button>
                 )}
                 {tvChannels.length > 0 && (
-                  <TabsTrigger value="tv">TV</TabsTrigger>
+                  <button
+                    onClick={() => setActiveTab('tv')}
+                    className={`text-sm font-medium pb-2 border-b-2 transition-colors ${
+                      activeTab === 'tv' 
+                        ? 'text-gray-900 border-gray-900' 
+                        : 'text-gray-500 border-transparent hover:text-gray-700'
+                    }`}
+                  >
+                    TV
+                  </button>
                 )}
                 {oohItems.length > 0 && (
-                  <TabsTrigger value="ooh">OOH</TabsTrigger>
+                  <button
+                    onClick={() => setActiveTab('ooh')}
+                    className={`text-sm font-medium pb-2 border-b-2 transition-colors ${
+                      activeTab === 'ooh' 
+                        ? 'text-gray-900 border-gray-900' 
+                        : 'text-gray-500 border-transparent hover:text-gray-700'
+                    }`}
+                  >
+                    OOH
+                  </button>
                 )}
                 {billboardItems.length > 0 && (
-                  <TabsTrigger value="billboard">Billboard</TabsTrigger>
+                  <button
+                    onClick={() => setActiveTab('billboard')}
+                    className={`text-sm font-medium pb-2 border-b-2 transition-colors ${
+                      activeTab === 'billboard' 
+                        ? 'text-gray-900 border-gray-900' 
+                        : 'text-gray-500 border-transparent hover:text-gray-700'
+                    }`}
+                  >
+                    Billboard
+                  </button>
                 )}
                 {liftboardItems.length > 0 && (
-                  <TabsTrigger value="liftboard">Liftboard</TabsTrigger>
+                  <button
+                    onClick={() => setActiveTab('liftboard')}
+                    className={`text-sm font-medium pb-2 border-b-2 transition-colors ${
+                      activeTab === 'liftboard' 
+                        ? 'text-gray-900 border-gray-900' 
+                        : 'text-gray-500 border-transparent hover:text-gray-700'
+                    }`}
+                  >
+                    Liftboard
+                  </button>
                 )}
-              </TabsList>
+              </div>
+            </div>
 
-              <TabsContent value="all" className="space-y-6">
+                          {activeTab === 'all' && (
+              <div className="space-y-6">
                 {/* TV Channels Configuration */}
                 {tvChannels.length > 0 && (
                   <div>
@@ -456,16 +508,99 @@ const CalculationModal = ({ isOpen, onClose, calculatorItems }) => {
                     </div>
                   </div>
                 )}
-              </TabsContent>
+              </div>
+            )}
 
-              <TabsContent value="tv" className="space-y-6">
-                {/* TV-specific configuration */}
-                <div className="text-center text-gray-500 py-8">
-                  TV-specific configuration options
-                </div>
-              </TabsContent>
+            {activeTab === 'tv' && (
+              <div className="space-y-6">
+                {/* TV Configuration */}
+                {tvChannels.length > 0 && (
+                  <div>
+                    <h4 className="font-medium mb-3">TV Channels</h4>
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {tvChannels.map((item, index) => (
+                        <Badge key={index} variant="secondary">
+                          TV ({item.name})
+                        </Badge>
+                      ))}
+                    </div>
+                    
+                    <div className="space-y-4">
+                      <div>
+                        <label className="text-sm font-medium mb-2 block">Реклам цацах цаг</label>
+                        <div className="flex gap-2">
+                          <Button
+                            variant={broadcastTime === '17:00-00:00' ? 'default' : 'outline'}
+                            size="sm"
+                            onClick={() => setBroadcastTime('17:00-00:00')}
+                          >
+                            17:00-00:00
+                          </Button>
+                          <Button
+                            variant={broadcastTime === 'other' ? 'default' : 'outline'}
+                            size="sm"
+                            onClick={() => setBroadcastTime('other')}
+                          >
+                            Бусад
+                          </Button>
+                        </div>
+                      </div>
 
-              <TabsContent value="ooh" className="space-y-6">
+                      <div>
+                        <label className="text-sm font-medium mb-2 block">Цацах хоногын тоо</label>
+                        <Input
+                          placeholder="Type here"
+                          value={broadcastDays}
+                          onChange={(e) => setBroadcastDays(e.target.value)}
+                        />
+                      </div>
+
+                      <div>
+                        <label className="text-sm font-medium mb-2 block">Реклам цацах хугацаа</label>
+                        <Input
+                          placeholder="Type here"
+                          value={broadcastDuration}
+                          onChange={(e) => setBroadcastDuration(e.target.value)}
+                        />
+                      </div>
+
+                      <div>
+                        <label className="text-sm font-medium mb-2 block">Байршил</label>
+                        <Select value={location} onValueChange={setLocation}>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Сонгох" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="ulaanbaatar">Улаанбаатар</SelectItem>
+                            <SelectItem value="darkhan">Дархан</SelectItem>
+                            <SelectItem value="erdenet">Эрдэнэт</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      {/* TV-specific Summary Row */}
+                      <div className="grid grid-cols-3 gap-4 p-4 bg-gray-50 rounded-lg">
+                        <div className="text-center">
+                          <div className="text-sm text-gray-600">Төлбөр</div>
+                          <div className="font-semibold">₮{tvChannels.reduce((sum, item) => sum + (item.cost || 0), 0).toLocaleString()}</div>
+                        </div>
+                        <div className="text-center">
+                          <div className="text-sm text-gray-600">Авч үзэлт</div>
+                          <div className="font-semibold">+{tvChannels.reduce((sum, item) => sum + (item.views || 0), 0).toLocaleString()}</div>
+                        </div>
+                        <div className="text-center">
+                          <div className="text-sm text-gray-600">Хугацаа</div>
+                          <div className="font-semibold">6 мин</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {activeTab === 'ooh' && (
+              <div className="space-y-6">
                 {/* OOH Configuration */}
                 {oohItems.length > 0 && (
                   <div>
@@ -531,15 +666,15 @@ const CalculationModal = ({ isOpen, onClose, calculatorItems }) => {
                         </Select>
                       </div>
 
-                      {/* Summary Row */}
+                      {/* OOH-specific Summary Row */}
                       <div className="grid grid-cols-3 gap-4 p-4 bg-gray-50 rounded-lg">
                         <div className="text-center">
                           <div className="text-sm text-gray-600">Төлбөр</div>
-                          <div className="font-semibold">₮{totalCost.toLocaleString()}</div>
+                          <div className="font-semibold">₮{oohItems.reduce((sum, item) => sum + (item.cost || 0), 0).toLocaleString()}</div>
                         </div>
                         <div className="text-center">
                           <div className="text-sm text-gray-600">Авч үзэлт</div>
-                          <div className="font-semibold">+{totalViews.toLocaleString()}</div>
+                          <div className="font-semibold">+{oohItems.reduce((sum, item) => sum + (item.views || 0), 0).toLocaleString()}</div>
                         </div>
                         <div className="text-center">
                           <div className="text-sm text-gray-600">Хугацаа</div>
@@ -549,9 +684,11 @@ const CalculationModal = ({ isOpen, onClose, calculatorItems }) => {
                     </div>
                   </div>
                 )}
-              </TabsContent>
+              </div>
+            )}
 
-              <TabsContent value="billboard" className="space-y-6">
+            {activeTab === 'billboard' && (
+              <div className="space-y-6">
                 {/* Billboard Configuration */}
                 {billboardItems.length > 0 && (
                   <div>
@@ -617,15 +754,15 @@ const CalculationModal = ({ isOpen, onClose, calculatorItems }) => {
                         </Select>
                       </div>
 
-                      {/* Summary Row */}
+                      {/* Billboard-specific Summary Row */}
                       <div className="grid grid-cols-3 gap-4 p-4 bg-gray-50 rounded-lg">
                         <div className="text-center">
                           <div className="text-sm text-gray-600">Төлбөр</div>
-                          <div className="font-semibold">₮{totalCost.toLocaleString()}</div>
+                          <div className="font-semibold">₮{billboardItems.reduce((sum, item) => sum + (item.cost || 0), 0).toLocaleString()}</div>
                         </div>
                         <div className="text-center">
                           <div className="text-sm text-gray-600">Авч үзэлт</div>
-                          <div className="font-semibold">+{totalViews.toLocaleString()}</div>
+                          <div className="font-semibold">+{billboardItems.reduce((sum, item) => sum + (item.views || 0), 0).toLocaleString()}</div>
                         </div>
                         <div className="text-center">
                           <div className="text-sm text-gray-600">Хугацаа</div>
@@ -635,9 +772,11 @@ const CalculationModal = ({ isOpen, onClose, calculatorItems }) => {
                     </div>
                   </div>
                 )}
-              </TabsContent>
+              </div>
+            )}
 
-              <TabsContent value="liftboard" className="space-y-6">
+            {activeTab === 'liftboard' && (
+              <div className="space-y-6">
                 {/* Liftboard Configuration */}
                 {liftboardItems.length > 0 && (
                   <div>
@@ -703,15 +842,15 @@ const CalculationModal = ({ isOpen, onClose, calculatorItems }) => {
                         </Select>
                       </div>
 
-                      {/* Summary Row */}
+                      {/* Liftboard-specific Summary Row */}
                       <div className="grid grid-cols-3 gap-4 p-4 bg-gray-50 rounded-lg">
                         <div className="text-center">
                           <div className="text-sm text-gray-600">Төлбөр</div>
-                          <div className="font-semibold">₮{totalCost.toLocaleString()}</div>
+                          <div className="font-semibold">₮{liftboardItems.reduce((sum, item) => sum + (item.cost || 0), 0).toLocaleString()}</div>
                         </div>
                         <div className="text-center">
                           <div className="text-sm text-gray-600">Авч үзэлт</div>
-                          <div className="font-semibold">+{totalViews.toLocaleString()}</div>
+                          <div className="font-semibold">+{liftboardItems.reduce((sum, item) => sum + (item.views || 0), 0).toLocaleString()}</div>
                         </div>
                         <div className="text-center">
                           <div className="text-sm text-gray-600">Хугацаа</div>
@@ -721,38 +860,50 @@ const CalculationModal = ({ isOpen, onClose, calculatorItems }) => {
                     </div>
                   </div>
                 )}
-              </TabsContent>
-            </Tabs>
+              </div>
+            )}
 
             {/* Total Cost Summary - Bottom of Right Sidebar */}
-            <div className="mt-8 p-4 bg-gray-50 rounded-lg border">
-              <h4 className="font-medium mb-3 text-center">Нийт төлбөр / Views</h4>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-blue-600 mb-2">
-                  ₮{totalCost.toLocaleString()} / {totalViews.toLocaleString()}+
-                </div>
-                <div className="text-sm text-gray-600">
-                  {totalItems} items selected
+            <div className="mt-8 pt-4 border-t border-gray-200">
+              <div className="flex items-center justify-between">
+                <h4 className="text-sm text-gray-600">Нийт төлбөр / Views</h4>
+                <div className="flex items-center gap-2">
+                  <div className="text-2xl font-bold text-gray-800">
+                    ₮{totalCost.toLocaleString()}
+                  </div>
+                  <img src="/icons/svg/slash.svg" alt="Separator" className="w-4 h-4" />
+                  <div className="text-2xl font-bold text-gray-800">
+                    {totalViews.toLocaleString()}
+                  </div>
+                  <img src="/icons/svg/view-insight.svg" alt="Views" className="w-4 h-4" />
                 </div>
               </div>
             </div>
-          </div>
-        </div>
 
-        {/* Footer Actions */}
-        <div className="flex justify-between items-center p-6 border-t bg-white">
-          <div className="text-lg font-semibold">
-            Нийт төлбөр / Views: ₮{totalCost.toLocaleString()} / {totalViews.toLocaleString()}+
-          </div>
-          <div className="flex gap-3">
-            <Button variant="outline" className="flex items-center gap-2">
-              <img src="/icons/svg/save.svg" alt="Save" className="w-4 h-4" />
-              Хадгалах
-            </Button>
-            <Button className="flex items-center gap-2">
-              <img src="/icons/svg/download.svg" alt="Download" className="w-4 h-4" />
-              Татаж авах
-            </Button>
+            {/* Action Buttons - Bottom of Right Sidebar */}
+            <div className="mt-4 flex gap-2">
+              <Button 
+                variant="outline" 
+                className="flex-1 flex items-center justify-center gap-2 py-3 rounded-full border-gray-300 hover:bg-[#09090B] hover:text-white hover:border-[#09090B] transition-colors cursor-pointer"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+                  <polyline points="17,21 17,13 7,13 7,21"/>
+                  <polyline points="7,3 7,8 15,8"/>
+                </svg>
+                Хадгалах
+              </Button>
+              <Button 
+                className="flex-1 flex items-center justify-center gap-2 py-3 bg-[#09090B] hover:bg-[#09090B]/90 rounded-full transition-colors cursor-pointer"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="7,10 12,15 17,10"/>
+                  <line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+                Татаж авах
+              </Button>
+            </div>
           </div>
         </div>
       </div>
