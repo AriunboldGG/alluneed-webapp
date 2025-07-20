@@ -1,10 +1,20 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, Suspense } from 'react';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import Map from './Map';
+import dynamic from 'next/dynamic';
 import { addToCalculator } from '@/lib/calculator';
+
+// Dynamically import Map component to avoid SSR issues
+const Map = dynamic(() => import('./Map'), {
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-full bg-gray-100 flex items-center justify-center">
+      <div className="text-gray-500">Loading map...</div>
+    </div>
+  )
+});
 
 const Billboard = () => {
   const [selectedTimeFilter, setSelectedTimeFilter] = useState('Day');
@@ -181,7 +191,13 @@ const Billboard = () => {
           <Card className="bg-white shadow-sm border border-gray-200">
             <CardContent className="p-0">
               <div className="h-[300px] sm:h-[400px] lg:h-[747px] rounded-lg overflow-hidden">
-                <Map billboards={billboards} />
+                <Suspense fallback={
+                  <div className="w-full h-full bg-gray-100 flex items-center justify-center">
+                    <div className="text-gray-500">Loading map...</div>
+                  </div>
+                }>
+                  <Map billboards={billboards} key="billboard-map" />
+                </Suspense>
               </div>
             </CardContent>
           </Card>

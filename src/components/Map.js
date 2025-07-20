@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import dynamic from 'next/dynamic';
 
 // Dynamically import the map components to avoid SSR issues
@@ -31,6 +31,8 @@ const Map = ({ billboards = [] }) => {
   const [customIcon, setCustomIcon] = useState(null);
   const [isClient, setIsClient] = useState(false);
   const [mapError, setMapError] = useState(false);
+  const [isLeafletReady, setIsLeafletReady] = useState(false);
+  const mapRef = useRef(null);
   
   // Default center (Ulaanbaatar coordinates)
   const defaultCenter = [47.9184, 106.9177];
@@ -40,20 +42,27 @@ const Map = ({ billboards = [] }) => {
     setIsClient(true);
   }, []);
   
-  // Create custom marker icon only on client side
+  // Initialize Leaflet only when component is mounted and client-side
   useEffect(() => {
     if (!isClient) return;
 
-    const createCustomIcon = async () => {
+    let isMounted = true;
+
+    const initializeLeaflet = async () => {
       try {
-        const L = await import('leaflet');
+        // Import Leaflet with proper error handling
+        const leafletModule = await import('leaflet');
+        const L = leafletModule.default || leafletModule;
         
-        // Check if L is properly loaded
-        if (!L || !L.default) {
-          throw new Error('Leaflet not properly loaded');
+        // Check if L and required methods exist
+        if (!L || typeof L.divIcon !== 'function') {
+          console.error('Leaflet divIcon method not available');
+          if (isMounted) setMapError(true);
+          return;
         }
         
-        const icon = L.default.divIcon({
+        // Create the custom icon
+        const icon = L.divIcon({
           className: 'custom-marker',
           html: `
             <div style="
@@ -90,15 +99,42 @@ const Map = ({ billboards = [] }) => {
           iconAnchor: [12, 41],
           popupAnchor: [1, -34],
         });
-        setCustomIcon(icon);
+        
+        if (isMounted) {
+          setCustomIcon(icon);
+          setIsLeafletReady(true);
+        }
       } catch (error) {
-        console.error('Error loading Leaflet:', error);
-        setMapError(true);
+        console.error('Error initializing Leaflet:', error);
+        if (isMounted) {
+          setMapError(true);
+        }
       }
     };
     
-    createCustomIcon();
+    // Add a small delay to ensure DOM is ready
+    const timer = setTimeout(() => {
+      initializeLeaflet();
+    }, 100);
+
+    return () => {
+      isMounted = false;
+      clearTimeout(timer);
+    };
   }, [isClient]);
+
+  // Cleanup function for map instance
+  useEffect(() => {
+    return () => {
+      if (mapRef.current && mapRef.current._leaflet_events) {
+        try {
+          mapRef.current.remove();
+        } catch (error) {
+          console.error('Error cleaning up map:', error);
+        }
+      }
+    };
+  }, []);
 
   // Don't render anything if not on client side
   if (!isClient) {
@@ -126,6 +162,15 @@ const Map = ({ billboards = [] }) => {
     );
   }
 
+  // Don't render map until Leaflet is ready
+  if (!isLeafletReady) {
+    return (
+      <div className="w-full h-full bg-gray-100 flex items-center justify-center">
+        <div className="text-gray-500">Initializing map...</div>
+      </div>
+    );
+  }
+
   return (
     <div className="w-full h-full">
       <MapContainer
@@ -134,6 +179,7 @@ const Map = ({ billboards = [] }) => {
         style={{ height: '100%', width: '100%' }}
         className="rounded-lg"
         key={isClient ? 'map-loaded' : 'map-loading'} // Force re-render when client is ready
+        ref={mapRef}
       >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -144,7 +190,7 @@ const Map = ({ billboards = [] }) => {
           <Marker
             key={billboard.id}
             position={billboard.coordinates}
-            icon={customIcon}
+            icon={customIcon} // Will use default icon if customIcon is null
           >
             <Popup>
               <div className="p-2">

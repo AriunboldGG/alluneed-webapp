@@ -1,13 +1,23 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, Suspense } from 'react';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import GoogleMapComponent from './GoogleMapComponent';
+import dynamic from 'next/dynamic';
 import { addToCalculator } from '@/lib/calculator';
+
+// Dynamically import GoogleMapComponent to avoid SSR issues
+const GoogleMapComponent = dynamic(() => import('./GoogleMapComponent'), {
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-full bg-gray-100 flex items-center justify-center">
+      <div className="text-gray-500">Loading map...</div>
+    </div>
+  )
+});
 
 const Liftboard = () => {
   const [selectedTimeFilter, setSelectedTimeFilter] = useState('daily');
@@ -224,7 +234,13 @@ const Liftboard = () => {
           <Card className="bg-white shadow-sm border border-gray-200">
             <CardContent className="p-0">
               <div className="h-[600px] rounded-lg overflow-hidden">
-                <GoogleMap />
+                <Suspense fallback={
+                  <div className="w-full h-full bg-gray-100 flex items-center justify-center">
+                    <div className="text-gray-500">Loading map...</div>
+                  </div>
+                }>
+                  <GoogleMap />
+                </Suspense>
               </div>
             </CardContent>
           </Card>

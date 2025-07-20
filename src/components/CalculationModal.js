@@ -58,8 +58,8 @@ const CalculationModal = ({ isOpen, onClose, calculatorItems }) => {
               <img src="/icons/svg/calculator.svg" alt="Calculator" className="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
             <h2 className="text-lg sm:text-xl font-semibold text-gray-800">
-              Calculation Bag ({totalItems})
-            </h2>
+            Calculation Bag ({totalItems})
+          </h2>
           </div>
           <div className="flex items-center space-x-2 sm:space-x-4">
             <button
@@ -699,7 +699,7 @@ const CalculationModal = ({ isOpen, onClose, calculatorItems }) => {
                           Billboard ({item.name})
                         </Badge>
                       ))}
-                    </div>
+                </div>
                     
                     <div className="space-y-4">
                       <div>
@@ -769,9 +769,9 @@ const CalculationModal = ({ isOpen, onClose, calculatorItems }) => {
                           <div className="font-semibold">6 мин</div>
                         </div>
                       </div>
-                    </div>
-                  </div>
-                )}
+                </div>
+            </div>
+          )}
               </div>
             )}
 
@@ -787,8 +787,8 @@ const CalculationModal = ({ isOpen, onClose, calculatorItems }) => {
                           Liftboard ({item.name})
                         </Badge>
                       ))}
-                    </div>
-                    
+        </div>
+
                     <div className="space-y-4">
                       <div>
                         <label className="text-sm font-medium mb-2 block">Реклам цацах цаг</label>
@@ -878,7 +878,7 @@ const CalculationModal = ({ isOpen, onClose, calculatorItems }) => {
                   <img src="/icons/svg/view-insight.svg" alt="Views" className="w-3 h-3 sm:w-4 sm:h-4" />
                 </div>
               </div>
-            </div>
+          </div>
 
             {/* Action Buttons - Bottom of Right Sidebar */}
             <div className="mt-4 flex flex-col sm:flex-row gap-2">
@@ -891,8 +891,8 @@ const CalculationModal = ({ isOpen, onClose, calculatorItems }) => {
                   <polyline points="17,21 17,13 7,13 7,21"/>
                   <polyline points="7,3 7,8 15,8"/>
                 </svg>
-                Хадгалах
-              </Button>
+              Хадгалах
+            </Button>
               <Button 
                 className="flex-1 flex items-center justify-center gap-2 py-2 sm:py-3 bg-[#09090B] hover:bg-[#09090B]/90 rounded-full transition-colors cursor-pointer text-sm"
               >
@@ -901,8 +901,8 @@ const CalculationModal = ({ isOpen, onClose, calculatorItems }) => {
                   <polyline points="7,10 12,15 17,10"/>
                   <line x1="12" y1="15" x2="12" y2="3"/>
                 </svg>
-                Татаж авах
-              </Button>
+              Татаж авах
+            </Button>
             </div>
           </div>
         </div>
