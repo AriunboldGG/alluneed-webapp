@@ -12,6 +12,31 @@ export async function POST(request) {
       );
     }
 
+    // Check if OpenAI API key is available
+    if (!process.env.OPENAI_API_KEY) {
+      // Mock response for testing
+      const lastMessage = messages[messages.length - 1];
+      const mockResponses = [
+        "Hello! I'm your AI assistant. How can I help you today?",
+        "That's an interesting question! Let me think about that...",
+        "I understand what you're asking. Here's what I can tell you about that topic.",
+        "Great question! Based on what you've shared, here's my response.",
+        "I'm here to help! What specific information are you looking for?",
+        "Thanks for reaching out! I'd be happy to assist you with that.",
+        "That's a good point. Let me provide you with some helpful information.",
+        "I see what you mean. Here's what I think about that...",
+        "Interesting perspective! Here's my take on the matter.",
+        "I'm glad you asked! Here's what I can share with you."
+      ];
+      
+      const randomResponse = mockResponses[Math.floor(Math.random() * mockResponses.length)];
+      
+      return NextResponse.json({
+        message: randomResponse,
+        chatId: chatId
+      });
+    }
+
     // Prepare messages for OpenAI API
     const openAIMessages = [
       {
