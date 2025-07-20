@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
@@ -33,7 +34,7 @@ const LoginPage = () => {
       <div className="max-w-md w-full space-y-8">
         {/* Logo */}
         <div className="text-center">
-          <img src="/icons/svg/mainlogo.svg" alt="Alluneed" className="h-8 w-8 mx-auto" />
+          <Image src="/icons/svg/mainlogo.svg" alt="Alluneed" width={32} height={32} className="h-8 w-8 mx-auto" />
           <h2 className="mt-6 text-3xl font-bold text-gray-900">Sign in to your account</h2>
           <p className="mt-2 text-sm text-gray-600">
             Welcome back! Please enter your details.
@@ -164,7 +165,7 @@ const LoginPage = () => {
 
           <div className="mt-6 text-center">
             <p className="text-sm text-gray-600">
-              Don't have an account?{' '}
+              Don&apos;t have an account?{' '}
               <a 
                 href="tel:+97696907972" 
                 className="font-medium text-blue-600 hover:text-blue-500 cursor-pointer"

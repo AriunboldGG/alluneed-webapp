@@ -233,7 +233,7 @@ const AIChatPage = () => {
                 </button>
                 <button
                   onClick={() => {
-                    setInputMessage("What's the difference between traditional and digital advertising?");
+                    setInputMessage("What&apos;s the difference between traditional and digital advertising?");
                     inputRef.current?.focus();
                   }}
                   className="p-4 text-left border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
