@@ -208,7 +208,7 @@ const AIChatPage = () => {
               </div>
               <h2 className="text-2xl font-bold text-gray-900 mb-2">Welcome to AI Chat</h2>
               <p className="text-gray-600 mb-6 max-w-md">
-                I'm here to help you with any questions about advertising, media planning, or campaign strategies.
+                I&apos;m here to help you with any questions about advertising, media planning, or campaign strategies.
               </p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-2xl w-full">
                 <button
