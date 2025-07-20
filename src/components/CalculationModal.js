@@ -50,7 +50,7 @@ const CalculationModal = ({ isOpen, onClose, calculatorItems }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[9999] bg-black bg-opacity-50 flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-[9999] bg-[#444444] bg-opacity-50 flex items-center justify-center p-4">
       <div className="w-full max-w-7xl h-full max-h-[90vh] bg-[#F4F4F5] flex flex-col relative z-[10000] rounded-lg overflow-hidden">
         <div className="p-4 sm:p-6 border-b flex justify-between items-center bg-white">
           <div className="flex items-center gap-2 sm:gap-3">
