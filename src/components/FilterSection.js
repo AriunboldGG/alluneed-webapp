@@ -15,7 +15,7 @@ const FilterSection = () => {
 
   // Define categories for each tab
   const tabCategories = {
-    traditional: ['all', 'tv', 'ooh', 'printings', 'billboard', 'liftboard'],
+    traditional: ['all', 'tv', 'ooh', 'news', 'billboard', 'liftboard'],
     digital: ['all', 'instagram', 'youtube', 'facebook', 'tiktok'],
     agency: ['all', 'marketing', 'video-production', 'branding', 'design']
   };

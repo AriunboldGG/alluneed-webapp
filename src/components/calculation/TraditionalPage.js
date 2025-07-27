@@ -5,6 +5,7 @@ import TVChannels from '../TVChannels';
 import OOH from '../OOH';
 import Billboard from '../Billboard';
 import Liftboard from '../Liftboard';
+import News from '../News';
 
 // Error boundary component
 const ErrorBoundary = ({ children, fallback }) => {
@@ -45,6 +46,13 @@ const TraditionalPage = ({ selectedCategory, searchQuery = '' }) => {
               <ErrorBoundary>
                 <Suspense fallback={<div className="text-gray-500">Loading OOH...</div>}>
                   <OOH searchQuery={searchQuery} />
+                </Suspense>
+              </ErrorBoundary>
+              
+              {/* News Section */}
+              <ErrorBoundary>
+                <Suspense fallback={<div className="text-gray-500">Loading News...</div>}>
+                  <News searchQuery={searchQuery} />
                 </Suspense>
               </ErrorBoundary>
               
@@ -107,6 +115,18 @@ const TraditionalPage = ({ selectedCategory, searchQuery = '' }) => {
               <ErrorBoundary>
                 <Suspense fallback={<div className="text-gray-500">Loading Liftboard...</div>}>
                   <Liftboard searchQuery={searchQuery} />
+                </Suspense>
+              </ErrorBoundary>
+            </div>
+          </div>
+        );
+      case 'news':
+        return (
+          <div className="min-h-screen bg-gray-50 py-8">
+            <div className="w-full px-4 sm:px-6 lg:px-8">
+              <ErrorBoundary>
+                <Suspense fallback={<div className="text-gray-500">Loading News...</div>}>
+                  <News searchQuery={searchQuery} />
                 </Suspense>
               </ErrorBoundary>
             </div>

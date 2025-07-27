@@ -1,57 +1,212 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardTitle, CardDescription } from '@/components/ui/card';
+import { addToCalculator } from '@/lib/calculator';
 
-const News = ({ news = [] }) => {
+const News = ({ searchQuery = '' }) => {
+  const [selectedTimeFilter, setSelectedTimeFilter] = useState('One day');
+  const [selectedOptions, setSelectedOptions] = useState({});
+  const timeFilters = ['One day', 'One week', 'One month'];
+
+  const newsChannels = [
+    {
+      id: 1,
+      name: 'News.mn',
+      avatar: '/images/news1.png',
+      avgViews: '+30\'000',
+      pricingOptions: [
+        { id: 'front', label: 'Location Front', price: '₮40,000', selected: true },
+        { id: 'middle', label: 'Location Middle', price: '₮40,000', selected: false }
+      ]
+    },
+    {
+      id: 2,
+      name: 'GoGo.mn',
+      avatar: '/images/news2.png',
+      avgViews: '+25\'000',
+      pricingOptions: [
+        { id: 'front', label: 'Location Front', price: '₮35,000', selected: true },
+        { id: 'middle', label: 'Location Middle', price: '₮35,000', selected: false }
+      ]
+    },
+    {
+      id: 3,
+      name: 'Zaluu.mn',
+      avatar: '/images/news3.png',
+      avgViews: '+20\'000',
+      pricingOptions: [
+        { id: 'front', label: 'Location Front', price: '₮30,000', selected: true },
+        { id: 'middle', label: 'Location Middle', price: '₮30,000', selected: false }
+      ]
+    },
+    {
+      id: 4,
+      name: 'Unuudur.mn',
+      avatar: '/images/news4.png',
+      avgViews: '+18\'000',
+      pricingOptions: [
+        { id: 'front', label: 'Location Front', price: '₮28,000', selected: true },
+        { id: 'middle', label: 'Location Middle', price: '₮28,000', selected: false }
+      ]
+    }
+  ];
+
+  const filteredChannels = newsChannels.filter(channel => {
+    if (!searchQuery.trim()) return true;
+    const query = searchQuery.toLowerCase();
+    return channel.name.toLowerCase().includes(query);
+  });
+
+  const handleOptionSelect = (channelId, optionId) => {
+    setSelectedOptions(prev => ({
+      ...prev,
+      [channelId]: {
+        ...prev[channelId],
+        [optionId]: !prev[channelId]?.[optionId]
+      }
+    }));
+  };
+
   return (
-    <div className="mb-25">
-      {/* Section Header */}
-      <div className="px-4 sm:px-6 lg:px-8 mb-6">
-        <div className="flex items-center">
-          <img src="/icons/svg/tv-retro.svg" alt="TV" className="w-6 h-6 mr-3" />
-          <h2 className="text-xl font-semibold text-gray-900">News</h2>
-        </div>
+    <div className="mb-8">
+      {/* Header */}
+      <div className="flex items-center space-x-3 mb-6">
+        <img src="/icons/svg/earth.svg" alt="News" className="w-6 h-6" />
+        <h2 className="text-2xl font-semibold text-gray-900">News</h2>
       </div>
 
-      {/* News Grid */}
-      <div className="px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-          {news.map((item) => (
-            <Card key={item.id} className="overflow-hidden hover:shadow-lg transition-shadow p-0">
-              {/* Image Section */}
-              <div className="relative h-[150px] sm:h-[227px] bg-gray-200">
-                <img 
-                  src={item.image} 
-                  alt={item.title} 
-                  className="w-full h-full object-cover"
-                  onError={(e) => { e.target.onerror = null; e.target.src = '/images/bill2.png'; }}
-                />
-              </div>
-              
-              <div className="px-4 pb-4">
-                {/* Date and Source */}
-                <div className="mb-2">
-                  <span className="text-sm font-medium text-[#09090B]">{item.date} • {item.source}</span>
+      {/* News Channels Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        {filteredChannels.length === 0 ? (
+          <div className="col-span-full text-center py-8">
+            <p className="text-gray-500 text-lg">No news channels found for "{searchQuery}"</p>
+          </div>
+        ) : (
+          filteredChannels.map((channel) => (
+            <Card key={channel.id} className="bg-white shadow-sm border border-gray-200">
+              <CardHeader className="pb-3">
+                <div className="flex items-center space-x-3">
+                  <div className="w-12 h-12 bg-gray-200 rounded-lg flex items-center justify-center">
+                    <img 
+                      src={channel.avatar} 
+                      alt={channel.name}
+                      className="w-8 h-8 rounded"
+                      onError={(e) => {
+                        e.target.style.display = 'none';
+                        e.target.nextSibling.style.display = 'flex';
+                      }}
+                    />
+                    <div className="w-8 h-8 bg-gray-300 rounded flex items-center justify-center text-xs font-medium text-gray-600" style={{ display: 'none' }}>
+                      {channel.name.charAt(0)}
+                    </div>
+                  </div>
+                  <CardTitle className="text-lg font-semibold text-gray-900">
+                    {channel.name}
+                  </CardTitle>
                 </div>
-                
-                {/* Title */}
-                <CardTitle className="text-lg font-bold text-[#09090B] mb-2">{item.title}</CardTitle>
-                
-                {/* Description */}
-                <CardDescription className="text-sm font-normal text-[#09090B] mb-4">
-                  {item.description}
-                </CardDescription>
-                
-                {/* Button */}
-                <Button className="w-full bg-white border border-gray-300 text-[#09090B] hover:bg-[#09090B] hover:text-white transition-colors rounded-[999px] cursor-pointer">
-                  View detail
-                </Button>
-              </div>
+              </CardHeader>
+
+              <CardContent className="space-y-4">
+                {/* Time Filters */}
+                <div className="flex space-x-2">
+                  {timeFilters.map((filter) => (
+                    <Button
+                      key={filter}
+                      variant={selectedTimeFilter === filter ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => setSelectedTimeFilter(filter)}
+                      className="text-xs cursor-pointer"
+                    >
+                      {filter}
+                    </Button>
+                  ))}
+                </div>
+
+                {/* Average Views */}
+                <div className="text-center">
+                  <div className="flex items-center justify-center space-x-2">
+                    <span className="text-2xl font-bold text-gray-900">{channel.avgViews}</span>
+                    <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M3.293 9.707a1 1 0 010-1.414l6-6a1 1 0 011.414 0l6 6a1 1 0 01-1.414 1.414L11 5.414V17a1 1 0 11-2 0V5.414L4.707 9.707a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                  <p className="text-sm text-gray-500">AVG Views</p>
+                </div>
+
+                {/* Pricing Options */}
+                <div className="space-y-2">
+                  {channel.pricingOptions.map((option) => {
+                    const isSelected = selectedOptions[channel.id]?.[option.id] || false;
+                    return (
+                      <div key={option.id} className="flex items-center justify-between">
+                        <div className="flex items-center space-x-2">
+                          <button
+                            onClick={() => handleOptionSelect(channel.id, option.id)}
+                            className={`w-4 h-4 rounded-sm border-2 transition-all duration-200 cursor-pointer flex items-center justify-center ${
+                              isSelected 
+                                ? 'bg-[#09090B] border-[#09090B]' 
+                                : 'bg-white border-gray-300 hover:border-[#09090B]'
+                            }`}
+                          >
+                            {isSelected && (
+                              <svg className="w-2 h-2 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                              </svg>
+                            )}
+                          </button>
+                          <span className="text-xl font-medium leading-7 tracking-normal text-[#09090B]">{option.price}</span>
+                        </div>
+                        <span className="text-sm font-medium leading-5 tracking-normal text-[#71717B]">
+                          Location{' '}
+                          <span className="text-sm font-medium leading-5 tracking-normal text-[#09090B]">
+                            {option.label === 'Location Front' ? 'Front' : 'Middle'}
+                          </span>
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {/* Action Buttons */}
+                <div className="flex space-x-2 pt-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="flex-1 rounded-[999px] bg-white text-[#09090B] border-gray-200 hover:bg-[#09090B] hover:text-white cursor-pointer"
+                  >
+                    View details
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => addToCalculator({
+                      id: channel.id,
+                      type: 'news',
+                      name: channel.name,
+                      duration: selectedTimeFilter,
+                      pricingOptions: channel.pricingOptions,
+                      selectedOptions: selectedOptions[channel.id] || {}
+                    })}
+                    className="flex-1 rounded-[999px] bg-white text-[#09090B] border-gray-200 hover:bg-[#09090B] hover:text-white cursor-pointer"
+                  >
+                    + Add
+                  </Button>
+                </div>
+              </CardContent>
             </Card>
-          ))}
-        </div>
+          ))
+        )}
+      </div>
+
+      {/* Show More Button */}
+      <div className="flex items-center">
+        <div className="flex-1 h-px bg-gray-200 mr-4"></div>
+        <button className="bg-white border border-gray-300 text-gray-700 px-6 py-3 rounded-[999px] font-medium hover:bg-[#09090B] hover:text-white transition-colors cursor-pointer">
+          Show more
+        </button>
+        <div className="flex-1 h-px bg-gray-200 ml-4"></div>
       </div>
     </div>
   );
