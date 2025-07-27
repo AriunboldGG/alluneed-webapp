@@ -213,9 +213,9 @@ const Billboard = ({ searchQuery = '' }) => {
 
         {/* Right: Map */}
         <div className="w-full lg:flex-1">
-          <Card className="bg-white shadow-sm border border-gray-200">
-            <CardContent className="p-0">
-              <div className="h-[300px] sm:h-[400px] lg:h-[747px] rounded-lg overflow-hidden">
+          <Card className="bg-white shadow-sm border border-gray-200 p-0">
+            <CardContent className="p-0 m-0">
+              <div className="h-[300px] sm:h-[400px] lg:h-[747px] w-full">
                 <Suspense fallback={
                   <div className="w-full h-full bg-gray-100 flex items-center justify-center">
                     <div className="text-gray-500">Loading map...</div>

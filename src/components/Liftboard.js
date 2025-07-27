@@ -23,6 +23,7 @@ const Liftboard = ({ searchQuery = '' }) => {
   const [selectedTimeFilter, setSelectedTimeFilter] = useState('daily');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedOptions, setSelectedOptions] = useState({});
+  const [selectedLiftboard, setSelectedLiftboard] = useState(null);
 
   const timeFilters = [
     { value: 'daily', label: 'Daily' },
@@ -134,7 +135,7 @@ const Liftboard = ({ searchQuery = '' }) => {
     const hasGoogleMapsAPI = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
     
     if (hasGoogleMapsAPI) {
-      return <GoogleMapComponent liftboards={liftboards} />;
+      return <GoogleMapComponent liftboards={liftboards} selectedLiftboard={selectedLiftboard} />;
     }
     
     return (
@@ -201,7 +202,13 @@ const Liftboard = ({ searchQuery = '' }) => {
               </div>
             ) : (
               filteredLiftboards.map((liftboard) => (
-              <Card key={liftboard.id} className="bg-white shadow-sm border border-[#E4E4E7] rounded-2xl">
+              <Card 
+                key={liftboard.id} 
+                className={`bg-white shadow-sm border border-[#E4E4E7] rounded-2xl cursor-pointer transition-all duration-200 ${
+                  selectedLiftboard?.id === liftboard.id ? 'ring-2 ring-[#FDC404] shadow-lg' : 'hover:shadow-md'
+                }`}
+                onClick={() => setSelectedLiftboard(liftboard)}
+              >
                 <CardHeader className="pb-3">
                   <div className="flex items-start justify-between">
                     <div className="flex items-start space-x-3 flex-1 min-w-0">
@@ -285,9 +292,9 @@ const Liftboard = ({ searchQuery = '' }) => {
 
         {/* Right: Google Map */}
         <div className="w-full lg:flex-1">
-          <Card className="bg-white shadow-sm border border-[#E4E4E7] rounded-2xl">
-            <CardContent className="p-0">
-              <div className="h-[600px] rounded-lg overflow-hidden">
+          <Card className="bg-white shadow-sm border border-[#E4E4E7] rounded-2xl overflow-hidden p-0">
+            <CardContent className="p-0 m-0">
+              <div className="h-[600px] w-full">
                 <Suspense fallback={
                   <div className="w-full h-full bg-gray-100 flex items-center justify-center">
                     <div className="text-gray-500">Loading map...</div>

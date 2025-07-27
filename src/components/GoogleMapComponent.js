@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef } from 'react';
 
-const GoogleMapComponent = ({ liftboards = [], center = { lat: 47.9184, lng: 106.9177 }, zoom = 13 }) => {
+const GoogleMapComponent = ({ liftboards = [], selectedLiftboard = null, center = { lat: 47.9184, lng: 106.9177 }, zoom = 13 }) => {
   const mapRef = useRef(null);
   const mapInstanceRef = useRef(null);
   const markersRef = useRef([]);
@@ -19,6 +19,10 @@ const GoogleMapComponent = ({ liftboards = [], center = { lat: 47.9184, lng: 106
       mapInstanceRef.current = new window.google.maps.Map(mapRef.current, {
         center: center,
         zoom: zoom,
+        fullscreenControl: false,
+        streetViewControl: false,
+        mapTypeControl: false,
+        zoomControl: true,
         styles: [
           {
             featureType: 'poi',
@@ -79,11 +83,55 @@ const GoogleMapComponent = ({ liftboards = [], center = { lat: 47.9184, lng: 106
     };
   }, [liftboards, center, zoom]);
 
+  // Handle selected liftboard navigation
+  useEffect(() => {
+    if (selectedLiftboard && mapInstanceRef.current) {
+      // Find the marker for the selected liftboard
+      const markerIndex = liftboards.findIndex(lb => lb.id === selectedLiftboard.id);
+      if (markerIndex !== -1 && markersRef.current[markerIndex]) {
+        const marker = markersRef.current[markerIndex];
+        
+        // Pan to the marker with smooth animation
+        mapInstanceRef.current.panTo(selectedLiftboard.coordinates);
+        
+        // Set zoom level for better visibility
+        mapInstanceRef.current.setZoom(15);
+        
+        // Open info window for the selected marker
+        const infoWindow = new window.google.maps.InfoWindow({
+          content: `
+            <div style="padding: 8px; max-width: 200px;">
+              <h3 style="margin: 0 0 4px 0; font-weight: 600; color: #111827;">${selectedLiftboard.name}</h3>
+              <p style="margin: 0 0 4px 0; font-size: 12px; color: #6B7280;">${selectedLiftboard.location}</p>
+              <div style="font-size: 11px; color: #9CA3AF;">
+                <p style="margin: 2px 0;">Code: ${selectedLiftboard.code}</p>
+                <p style="margin: 2px 0;">Audience: ${selectedLiftboard.audience}</p>
+              </div>
+            </div>
+          `
+        });
+        
+        infoWindow.open(mapInstanceRef.current, marker);
+        
+        // Close info window after 3 seconds
+        setTimeout(() => {
+          infoWindow.close();
+        }, 3000);
+      }
+    }
+  }, [selectedLiftboard, liftboards]);
+
   return (
     <div 
       ref={mapRef} 
-      className="w-full h-full rounded-lg"
-      style={{ minHeight: '400px' }}
+      className="w-full h-full"
+      style={{ 
+        minHeight: '400px',
+        width: '100%',
+        height: '100%',
+        margin: 0,
+        padding: 0
+      }}
     />
   );
 };
