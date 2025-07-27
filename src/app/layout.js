@@ -20,6 +20,14 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return React.createElement('html', { lang: 'en' }, [
+    React.createElement('head', { key: 'head' }, [
+      React.createElement('script', {
+        key: 'google-maps',
+        src: `https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places`,
+        async: true,
+        defer: true
+      })
+    ]),
     React.createElement('body', {
       key: 'body',
       className: `${geistSans.variable} ${geistMono.variable} antialiased`
