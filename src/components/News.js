@@ -15,7 +15,7 @@ const News = ({ searchQuery = '' }) => {
       id: 1,
       name: 'News.mn',
       avatar: '/images/news1.png',
-      avgViews: '+30\'000',
+      avgViews: '+30,000',
       pricingOptions: [
         { id: 'front', label: 'Location Front', price: '₮40,000', selected: true },
         { id: 'middle', label: 'Location Middle', price: '₮40,000', selected: false }
@@ -25,7 +25,7 @@ const News = ({ searchQuery = '' }) => {
       id: 2,
       name: 'GoGo.mn',
       avatar: '/images/news2.png',
-      avgViews: '+25\'000',
+      avgViews: '+25,000',
       pricingOptions: [
         { id: 'front', label: 'Location Front', price: '₮35,000', selected: true },
         { id: 'middle', label: 'Location Middle', price: '₮35,000', selected: false }
@@ -35,7 +35,7 @@ const News = ({ searchQuery = '' }) => {
       id: 3,
       name: 'Zaluu.mn',
       avatar: '/images/news3.png',
-      avgViews: '+20\'000',
+      avgViews: '+20,000',
       pricingOptions: [
         { id: 'front', label: 'Location Front', price: '₮30,000', selected: true },
         { id: 'middle', label: 'Location Middle', price: '₮30,000', selected: false }
@@ -45,7 +45,7 @@ const News = ({ searchQuery = '' }) => {
       id: 4,
       name: 'Unuudur.mn',
       avatar: '/images/news4.png',
-      avgViews: '+18\'000',
+      avgViews: '+18,000',
       pricingOptions: [
         { id: 'front', label: 'Location Front', price: '₮28,000', selected: true },
         { id: 'middle', label: 'Location Middle', price: '₮28,000', selected: false }

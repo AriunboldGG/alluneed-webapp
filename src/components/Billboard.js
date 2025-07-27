@@ -107,7 +107,7 @@ const Billboard = ({ searchQuery = '' }) => {
           <div className="space-y-3 sm:space-y-4 max-h-[400px] sm:max-h-[500px] lg:max-h-[747px] overflow-y-auto pr-2 scrollbar-hide">
             {filteredBillboards.length === 0 ? (
               <div className="text-center py-8">
-                <p className="text-gray-500 text-lg">No billboards found for "{searchQuery}"</p>
+                <p className="text-gray-500 text-lg">No billboards found for &quot;{searchQuery}&quot;</p>
               </div>
             ) : (
               filteredBillboards.map((billboard) => (

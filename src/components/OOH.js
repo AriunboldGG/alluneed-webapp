@@ -210,7 +210,7 @@ const OOH = ({ searchQuery = '' }) => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
         {filteredPackages.length === 0 ? (
           <div className="col-span-full text-center py-8">
-            <p className="text-gray-500 text-lg">No OOH packages found for "{searchQuery}"</p>
+                            <p className="text-gray-500 text-lg">No OOH packages found for &quot;{searchQuery}&quot;</p>
           </div>
         ) : (
           filteredPackages.map((pkg) => (
