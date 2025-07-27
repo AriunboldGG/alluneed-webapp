@@ -5,7 +5,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { addToCalculator } from '@/lib/calculator';
 import TVChannelDetailsModal from './TVChannelDetailsModal';
 
-const TVChannels = () => {
+const TVChannels = ({ searchQuery = '' }) => {
   const [selectedTimeFilter, setSelectedTimeFilter] = useState('One day');
 
   const timeFilters = ['One day', 'One week', 'One month'];
@@ -53,6 +53,17 @@ const TVChannels = () => {
     }
   ];
 
+  // Filter channels based on search query
+  const filteredChannels = tvChannels.filter(channel => {
+    if (!searchQuery.trim()) return true;
+    
+    const query = searchQuery.toLowerCase();
+    return (
+      channel.name.toLowerCase().includes(query) ||
+      channel.platforms.some(platform => platform.toLowerCase().includes(query))
+    );
+  });
+
   return (
     <div className="mb-8">
       <div className="flex justify-between items-center mb-6">
@@ -64,7 +75,12 @@ const TVChannels = () => {
 
       {/* Channel Cards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        {tvChannels.map((channel) => (
+        {filteredChannels.length === 0 ? (
+          <div className="col-span-full text-center py-8">
+            <p className="text-gray-500 text-lg">No channels found for "{searchQuery}"</p>
+          </div>
+        ) : (
+          filteredChannels.map((channel) => (
           <Card key={channel.id} className="bg-white shadow-sm border border-gray-200">
             <CardHeader className="pb-4">
               <div className="flex flex-col space-y-3">
@@ -151,7 +167,8 @@ const TVChannels = () => {
               </div>
             </CardFooter>
           </Card>
-        ))}
+        ))
+        )}
       </div>
 
       {/* Show More Button */}

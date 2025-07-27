@@ -1,13 +1,15 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { CategoryTabs } from '@/components/ui/category-tabs';
 import Events from '@/components/Events';
 import Campaigns from '@/components/Campaigns';
 import News from '@/components/News';
+import { useSearch } from '@/hooks/useSearch';
 
 const ForYouPage = () => {
   const [activeTab, setActiveTab] = useState('all');
+  const [searchQuery, setSearchQuery] = useState('');
 
   const events = [
     {
@@ -140,7 +142,37 @@ const ForYouPage = () => {
 
   const allContent = [...events, ...campaigns, ...news];
 
+  // Filter content based on search query
+  const filterContent = (content) => {
+    if (!searchQuery.trim()) return content;
+    
+    const query = searchQuery.toLowerCase();
+    return content.filter(item => 
+      item.title.toLowerCase().includes(query) ||
+      item.description.toLowerCase().includes(query) ||
+      item.location?.toLowerCase().includes(query) ||
+      item.brand?.toLowerCase().includes(query) ||
+      item.source?.toLowerCase().includes(query)
+    );
+  };
 
+  const filteredEvents = filterContent(events);
+  const filteredCampaigns = filterContent(campaigns);
+  const filteredNews = filterContent(news);
+
+  // Listen for search events
+  useEffect(() => {
+    const handleSearchChange = (event) => {
+      console.log('SearchChange event received:', event.detail);
+      setSearchQuery(event.detail.query);
+    };
+    
+    window.addEventListener('searchChange', handleSearchChange);
+    
+    return () => {
+      window.removeEventListener('searchChange', handleSearchChange);
+    };
+  }, []);
 
   const categories = [
     { value: 'all', label: 'All', count: allContent.length },
@@ -169,15 +201,15 @@ const ForYouPage = () => {
       {/* Content Sections */}
       {activeTab === 'all' && (
         <>
-          <Events events={events} />
-          <Campaigns campaigns={campaigns} />
-          <News news={news} />
+          <Events events={filteredEvents} />
+          <Campaigns campaigns={filteredCampaigns} />
+          <News news={filteredNews} />
         </>
       )}
       
-      {activeTab === 'events' && <Events events={events} />}
-      {activeTab === 'campaigns' && <Campaigns campaigns={campaigns} />}
-      {activeTab === 'news' && <News news={news} />}
+      {activeTab === 'events' && <Events events={filteredEvents} />}
+      {activeTab === 'campaigns' && <Campaigns campaigns={filteredCampaigns} />}
+      {activeTab === 'news' && <News news={filteredNews} />}
 
 
     </div>

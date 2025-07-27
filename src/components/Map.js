@@ -27,8 +27,9 @@ const Popup = dynamic(
   { ssr: false }
 );
 
-const Map = ({ billboards = [] }) => {
+const Map = ({ billboards = [], selectedBillboard = null }) => {
   const [customIcon, setCustomIcon] = useState(null);
+  const [selectedIcon, setSelectedIcon] = useState(null);
   const [isClient, setIsClient] = useState(false);
   const [mapError, setMapError] = useState(false);
   const [isLeafletReady, setIsLeafletReady] = useState(false);
@@ -61,7 +62,7 @@ const Map = ({ billboards = [] }) => {
           return;
         }
         
-        // Create the custom icon
+        // Create the regular custom icon
         const icon = L.divIcon({
           className: 'custom-marker',
           html: `
@@ -99,9 +100,50 @@ const Map = ({ billboards = [] }) => {
           iconAnchor: [12, 41],
           popupAnchor: [1, -34],
         });
+
+        // Create the selected custom icon (larger and different color)
+        const selectedIcon = L.divIcon({
+          className: 'custom-marker-selected',
+          html: `
+            <div style="
+              width: 35px;
+              height: 57px;
+              background: #FD3D80;
+              border-radius: 50% 50% 50% 0;
+              transform: rotate(-45deg);
+              margin: -28px -17px;
+              position: relative;
+              box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            ">
+              <div style="
+                width: 21px;
+                height: 21px;
+                background: white;
+                border-radius: 50%;
+                position: absolute;
+                top: 4px;
+                left: 7px;
+              ">
+                <div style="
+                  width: 13px;
+                  height: 13px;
+                  background: #FD3D80;
+                  border-radius: 50%;
+                  position: absolute;
+                  top: 4px;
+                  left: 4px;
+                "></div>
+              </div>
+            </div>
+          `,
+          iconSize: [35, 57],
+          iconAnchor: [17, 57],
+          popupAnchor: [1, -34],
+        });
         
         if (isMounted) {
           setCustomIcon(icon);
+          setSelectedIcon(selectedIcon);
           setIsLeafletReady(true);
         }
       } catch (error) {
@@ -122,6 +164,30 @@ const Map = ({ billboards = [] }) => {
       clearTimeout(timer);
     };
   }, [isClient]);
+
+  // Navigate to selected billboard when it changes
+  useEffect(() => {
+    if (selectedBillboard && mapRef.current && mapRef.current.setView) {
+      try {
+        // Higher zoom level (18) for better detail and marker visibility
+        mapRef.current.setView(selectedBillboard.coordinates, 18);
+        
+        // Add a small delay to ensure the map has moved, then open the popup
+        setTimeout(() => {
+          // Find the marker element by looking for the selected billboard's coordinates
+          const markerElements = document.querySelectorAll('.leaflet-marker-icon');
+          markerElements.forEach(element => {
+            const rect = element.getBoundingClientRect();
+            if (rect.width > 30) { // Selected marker is larger
+              element.click();
+            }
+          });
+        }, 800);
+      } catch (error) {
+        console.error('Error navigating to billboard:', error);
+      }
+    }
+  }, [selectedBillboard]);
 
   // Cleanup function for map instance
   useEffect(() => {
@@ -177,7 +243,7 @@ const Map = ({ billboards = [] }) => {
         center={defaultCenter}
         zoom={13}
         style={{ height: '100%', width: '100%' }}
-        className="rounded-lg"
+        className={`rounded-lg ${!selectedBillboard ? 'pointer-events-none' : ''}`}
         key={isClient ? 'map-loaded' : 'map-loading'} // Force re-render when client is ready
         ref={mapRef}
       >
@@ -190,7 +256,12 @@ const Map = ({ billboards = [] }) => {
           <Marker
             key={billboard.id}
             position={billboard.coordinates}
-            icon={customIcon} // Will use default icon if customIcon is null
+            icon={selectedBillboard?.id === billboard.id ? selectedIcon : customIcon}
+            eventHandlers={{
+              click: () => {
+                // This will be handled by the parent component
+              }
+            }}
           >
             <Popup>
               <div className="p-2">

@@ -4,10 +4,12 @@ import React, { useState, useEffect } from 'react';
 import TraditionalPage from '@/components/calculation/TraditionalPage';
 import DigitalPage from '@/components/calculation/DigitalPage';
 import AgencyPage from '@/components/calculation/AgencyPage';
+import { useSearch } from '@/hooks/useSearch';
 
 const CalculationPage = () => {
   const [activeTab, setActiveTab] = useState('traditional');
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const [searchQuery, setSearchQuery] = useState('');
 
   // Listen for filter changes from FilterSection
   useEffect(() => {
@@ -34,26 +36,34 @@ const CalculationPage = () => {
       if (event.detail.category) setSelectedCategory(event.detail.category);
     };
     
+    // Custom event listener for search changes
+    const handleSearchChange = (event) => {
+      console.log('SearchChange event received:', event.detail);
+      setSearchQuery(event.detail.query);
+    };
+    
     window.addEventListener('filterChange', handleFilterChange);
+    window.addEventListener('searchChange', handleSearchChange);
 
     return () => {
       window.removeEventListener('storage', handleStorageChange);
       window.removeEventListener('filterChange', handleFilterChange);
+      window.removeEventListener('searchChange', handleSearchChange);
     };
   }, []);
 
   const renderContent = () => {
-    console.log('Rendering content for tab:', activeTab, 'category:', selectedCategory);
+    console.log('Rendering content for tab:', activeTab, 'category:', selectedCategory, 'search:', searchQuery);
     
     switch (activeTab) {
       case 'traditional':
-        return <TraditionalPage selectedCategory={selectedCategory} />;
+        return <TraditionalPage selectedCategory={selectedCategory} searchQuery={searchQuery} />;
       case 'digital':
-        return <DigitalPage selectedCategory={selectedCategory} />;
+        return <DigitalPage selectedCategory={selectedCategory} searchQuery={searchQuery} />;
       case 'agency':
-        return <AgencyPage selectedCategory={selectedCategory} />;
+        return <AgencyPage selectedCategory={selectedCategory} searchQuery={searchQuery} />;
       default:
-        return <TraditionalPage selectedCategory={selectedCategory} />;
+        return <TraditionalPage selectedCategory={selectedCategory} searchQuery={searchQuery} />;
     }
   };
 

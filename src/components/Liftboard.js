@@ -19,9 +19,10 @@ const GoogleMapComponent = dynamic(() => import('./GoogleMapComponent'), {
   )
 });
 
-const Liftboard = () => {
+const Liftboard = ({ searchQuery = '' }) => {
   const [selectedTimeFilter, setSelectedTimeFilter] = useState('daily');
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const [selectedOptions, setSelectedOptions] = useState({});
 
   const timeFilters = [
     { value: 'daily', label: 'Daily' },
@@ -42,62 +43,91 @@ const Liftboard = () => {
       code: '01',
       name: 'Метромалл их дэлгүүр',
       location: 'Сүхбаатарын талбайн баруун талд / СБД / Энхтайваны өргөн чөлөө / Зүүн хойд',
-      price: '5,000₮ = 1 view daily',
       audience: '15 өрх айл',
       coordinates: { lat: 47.9184, lng: 106.9177 },
       category: 'commercial',
-      views: '25,000',
-      costPerView: '5,000₮'
+      pricingOptions: [
+        { id: 'poster', label: 'Poster', price: '₮40,000', selected: true },
+        { id: 'ledtv', label: 'Led TV', price: '₮80,000', selected: false }
+      ]
     },
     {
       id: 2,
       code: '02',
       name: 'Энхтайван их дэлгүүр',
       location: 'Энхтайваны өргөн чөлөө / СБД / Баянзүрх дүүрэг / Баруун хойд',
-      price: '4,500₮ = 1 view daily',
       audience: '12 өрх айл',
       coordinates: { lat: 47.9200, lng: 106.9200 },
       category: 'commercial',
-      views: '22,000',
-      costPerView: '4,500₮'
+      pricingOptions: [
+        { id: 'poster', label: 'Poster', price: '₮35,000', selected: true },
+        { id: 'ledtv', label: 'Led TV', price: '₮70,000', selected: false }
+      ]
     },
     {
       id: 3,
       code: '03',
       name: 'Гэмтэл сансрын төв',
       location: 'Чингис хааны өргөн чөлөө / ХЗД / Хан-Уул дүүрэг / Төв',
-      price: '6,200₮ = 1 view daily',
       audience: '18 өрх айл',
       coordinates: { lat: 47.9150, lng: 106.9150 },
       category: 'commercial',
-      views: '30,000',
-      costPerView: '6,200₮'
+      pricingOptions: [
+        { id: 'poster', label: 'Poster', price: '₮45,000', selected: true },
+        { id: 'ledtv', label: 'Led TV', price: '₮90,000', selected: false }
+      ]
     },
     {
       id: 4,
       code: '04',
       name: 'Их Дэлгүүр',
       location: 'Их Дэлгүүрийн гудамж / БЗД / Баянзүрх дүүрэг / Зүүн',
-      price: '3,800₮ = 1 view daily',
       audience: '10 өрх айл',
       coordinates: { lat: 47.9250, lng: 106.9250 },
       category: 'commercial',
-      views: '18,000',
-      costPerView: '3,800₮'
+      pricingOptions: [
+        { id: 'poster', label: 'Poster', price: '₮30,000', selected: true },
+        { id: 'ledtv', label: 'Led TV', price: '₮60,000', selected: false }
+      ]
     },
     {
       id: 5,
       code: '05',
       name: 'Ханбүргэдийн төв',
       location: 'Ханбүргэдийн гудамж / ХЗД / Хан-Уул дүүрэг / Баруун',
-      price: '5,500₮ = 1 view daily',
       audience: '14 өрх айл',
       coordinates: { lat: 47.9100, lng: 106.9100 },
       category: 'commercial',
-      views: '26,000',
-      costPerView: '5,500₮'
+      pricingOptions: [
+        { id: 'poster', label: 'Poster', price: '₮38,000', selected: true },
+        { id: 'ledtv', label: 'Led TV', price: '₮76,000', selected: false }
+      ]
     }
   ];
+
+  // Handle option selection
+  const handleOptionSelect = (liftboardId, optionId) => {
+    setSelectedOptions(prev => ({
+      ...prev,
+      [liftboardId]: {
+        ...prev[liftboardId],
+        [optionId]: !prev[liftboardId]?.[optionId]
+      }
+    }));
+  };
+
+  // Filter liftboards based on search query
+  const filteredLiftboards = liftboards.filter(liftboard => {
+    if (!searchQuery.trim()) return true;
+    
+    const query = searchQuery.toLowerCase();
+    return (
+      liftboard.code.toLowerCase().includes(query) ||
+      liftboard.name.toLowerCase().includes(query) ||
+      liftboard.location.toLowerCase().includes(query) ||
+      liftboard.category.toLowerCase().includes(query)
+    );
+  });
 
   const GoogleMap = () => {
     // Check if Google Maps API key is available
@@ -165,12 +195,17 @@ const Liftboard = () => {
         {/* Left: Liftboard List */}
         <div className="w-full lg:w-[440px] lg:flex-shrink-0">
           <div className="space-y-4 max-h-[600px] overflow-y-auto pr-2 scrollbar-hide">
-            {liftboards.map((liftboard) => (
-              <Card key={liftboard.id} className="bg-white shadow-sm border border-gray-200">
+            {filteredLiftboards.length === 0 ? (
+              <div className="text-center py-8">
+                <p className="text-gray-500 text-lg">No liftboards found for "{searchQuery}"</p>
+              </div>
+            ) : (
+              filteredLiftboards.map((liftboard) => (
+              <Card key={liftboard.id} className="bg-white shadow-sm border border-[#E4E4E7] rounded-2xl">
                 <CardHeader className="pb-3">
                   <div className="flex items-start justify-between">
                     <div className="flex items-start space-x-3 flex-1 min-w-0">
-                      <Badge className="w-8 h-8 bg-yellow-500 text-white rounded-full flex items-center justify-center text-sm font-medium flex-shrink-0">
+                      <Badge className="w-8 h-8 bg-[#FDC404] text-white rounded-full flex items-center justify-center text-sm font-medium flex-shrink-0">
                         {liftboard.code}
                       </Badge>
                       <div className="flex-1 min-w-0">
@@ -183,55 +218,74 @@ const Liftboard = () => {
                       </div>
                     </div>
                     <div className="flex space-x-2 flex-shrink-0">
-                      <Button 
-                        size="sm" 
-                        variant="secondary" 
-                        className="w-8 h-8 p-0 rounded-full"
+                      <button 
+                        className="w-8 h-8 p-0 rounded-full bg-[#09090B] hover:bg-gray-900 transition-colors cursor-pointer flex items-center justify-center"
                         onClick={() => addToCalculator({ 
                           id: liftboard.id,
                           type: 'liftboard', 
                           name: liftboard.name,
                           location: liftboard.location,
                           duration: 'Daily',
-                          dailyViews: parseInt(liftboard.views.replace(',', '')),
-                          cost: parseInt(liftboard.costPerView.replace('₮', '').replace(',', ''))
+                          pricingOptions: liftboard.pricingOptions,
+                          selectedOptions: selectedOptions[liftboard.id] || {}
                         })}
                       >
                         <img src="/icons/svg/bill-plus.svg" alt="Add" className="w-4 h-4" />
-                      </Button>
-                      <Button size="sm" variant="secondary" className="w-8 h-8 p-0 rounded-full">
+                      </button>
+                      <button className="w-8 h-8 p-0 rounded-full bg-white border border-gray-300 hover:bg-gray-50 transition-colors cursor-pointer flex items-center justify-center">
                         <img src="/icons/svg/bill-more.svg" alt="More" className="w-4 h-4" />
-                      </Button>
+                      </button>
                     </div>
                   </div>
                 </CardHeader>
 
                 <CardContent className="space-y-3">
-                  {/* Statistics */}
-                  <div className="flex justify-between items-center">
-                    <div className="flex items-center space-x-2">
-                      <span className="text-lg font-bold text-gray-900">+{liftboard.views}</span>
-                      <span className="text-sm text-gray-500">Views</span>
+                  {/* Pricing Options and Audience Count in Row */}
+                  <div className="flex items-center justify-between">
+                    {/* Pricing Options */}
+                    <div className="space-y-2">
+                      {liftboard.pricingOptions.map((option) => {
+                        const isSelected = selectedOptions[liftboard.id]?.[option.id] || false;
+                        return (
+                          <div key={option.id} className="flex items-center space-x-3">
+                            <button
+                              onClick={() => handleOptionSelect(liftboard.id, option.id)}
+                              className={`w-4 h-4 rounded-sm border-2 transition-all duration-200 cursor-pointer flex items-center justify-center ${
+                                isSelected 
+                                  ? 'bg-[#09090B] border-[#09090B]' 
+                                  : 'bg-white border-gray-300 hover:border-[#09090B]'
+                              }`}
+                            >
+                              {isSelected && (
+                                <svg className="w-2 h-2 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                </svg>
+                              )}
+                            </button>
+                            <span className="text-sm font-medium text-gray-900">
+                              {option.price} = {option.label}
+                            </span>
+                          </div>
+                        );
+                      })}
                     </div>
-                    <div className="text-right">
-                      <p className="text-sm font-medium text-gray-900">{liftboard.audience}</p>
+
+                    {/* Audience Count */}
+                    <div className="flex items-center space-x-2 border border-[#E4E4E7] rounded-full px-3 py-1">
+                      <img src="/icons/svg/users.svg" alt="Users" className="w-4 h-4" />
+                      <span className="text-sm font-medium text-black">{liftboard.audience}</span>
                     </div>
                   </div>
                 </CardContent>
-
-                <CardFooter className="pt-2">
-                  <p className="text-sm text-gray-600">
-                    {liftboard.price}
-                  </p>
-                </CardFooter>
               </Card>
-            ))}
+            ))
+            )}
           </div>
         </div>
 
         {/* Right: Google Map */}
         <div className="w-full lg:flex-1">
-          <Card className="bg-white shadow-sm border border-gray-200">
+          <Card className="bg-white shadow-sm border border-[#E4E4E7] rounded-2xl">
             <CardContent className="p-0">
               <div className="h-[600px] rounded-lg overflow-hidden">
                 <Suspense fallback={

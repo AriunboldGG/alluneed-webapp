@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 
-const DigitalPage = ({ selectedCategory }) => {
+const DigitalPage = ({ selectedCategory, searchQuery = '' }) => {
   // Sample data for digital channels
   const digitalChannels = [
     {
@@ -107,9 +107,26 @@ const DigitalPage = ({ selectedCategory }) => {
   ];
 
   // Filter channels based on selected category
-  const filteredChannels = selectedCategory && selectedCategory !== 'all' 
-    ? digitalChannels.filter(channel => channel.category === selectedCategory)
-    : digitalChannels;
+  // Filter channels based on category and search query
+  const filteredChannels = digitalChannels.filter(channel => {
+    // Category filter
+    if (selectedCategory && selectedCategory !== 'all' && channel.category !== selectedCategory) {
+      return false;
+    }
+    
+    // Search filter
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase();
+      return (
+        channel.name.toLowerCase().includes(query) ||
+        channel.handle.toLowerCase().includes(query) ||
+        channel.category.toLowerCase().includes(query) ||
+        channel.socialPlatforms.some(platform => platform.toLowerCase().includes(query))
+      );
+    }
+    
+    return true;
+  });
 
   const getSocialIcon = (platform) => {
     switch (platform) {
@@ -131,7 +148,17 @@ const DigitalPage = ({ selectedCategory }) => {
 
         {/* Content Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredChannels.map((channel) => (
+          {filteredChannels.length === 0 ? (
+            <div className="col-span-full text-center py-12">
+              <p className="text-gray-500 text-lg">
+                {searchQuery.trim() 
+                  ? `No digital channels found for "${searchQuery}"`
+                  : 'No digital channels available'
+                }
+              </p>
+            </div>
+          ) : (
+            filteredChannels.map((channel) => (
             <Card key={channel.id} className="overflow-hidden hover:shadow-lg transition-all duration-300 hover:scale-105">
               <CardHeader className="pb-4">
                 {/* Profile Header */}
@@ -251,7 +278,8 @@ const DigitalPage = ({ selectedCategory }) => {
                 </div>
               </CardFooter>
             </Card>
-          ))}
+          ))
+          )}
         </div>
 
         {/* Empty State */}

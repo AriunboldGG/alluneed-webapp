@@ -5,7 +5,7 @@ import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/componen
 
 import { addToCalculator } from '@/lib/calculator';
 
-const OOH = () => {
+const OOH = ({ searchQuery = '' }) => {
   const [selectedProvider, setSelectedProvider] = useState('JCDecaux');
 
   const providers = ['JCDecaux', 'CCTS'];
@@ -158,6 +158,18 @@ const OOH = () => {
 
   const packages = selectedProvider === 'JCDecaux' ? jcdecauxPackages : cctsPackages;
 
+  // Filter packages based on search query
+  const filteredPackages = packages.filter(pkg => {
+    if (!searchQuery.trim()) return true;
+    
+    const query = searchQuery.toLowerCase();
+    return (
+      pkg.name.toLowerCase().includes(query) ||
+      pkg.nameMongolian.toLowerCase().includes(query) ||
+      selectedProvider.toLowerCase().includes(query)
+    );
+  });
+
   const dataLabels = {
     busStop: 'Автобусны зогсоол',
     infoFacility: 'Мэдээллийн байгууламж',
@@ -196,7 +208,12 @@ const OOH = () => {
 
       {/* Package Cards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-        {packages.map((pkg) => (
+        {filteredPackages.length === 0 ? (
+          <div className="col-span-full text-center py-8">
+            <p className="text-gray-500 text-lg">No OOH packages found for "{searchQuery}"</p>
+          </div>
+        ) : (
+          filteredPackages.map((pkg) => (
           <Card key={pkg.id} className="bg-white shadow-sm border border-gray-200">
             <CardHeader className="pb-4">
               <div className="flex items-center space-x-3">
@@ -246,7 +263,8 @@ const OOH = () => {
               </button>
             </CardFooter>
           </Card>
-        ))}
+        ))
+        )}
       </div>
     </div>
   );

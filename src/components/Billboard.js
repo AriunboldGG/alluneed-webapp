@@ -16,8 +16,9 @@ const Map = dynamic(() => import('./Map'), {
   )
 });
 
-const Billboard = () => {
+const Billboard = ({ searchQuery = '' }) => {
   const [selectedTimeFilter, setSelectedTimeFilter] = useState('Day');
+  const [selectedBillboard, setSelectedBillboard] = useState(null);
 
   const timeFilters = ['Day', 'Week', 'Month'];
 
@@ -79,6 +80,18 @@ const Billboard = () => {
     }
   ];
 
+  // Filter billboards based on search query
+  const filteredBillboards = billboards.filter(billboard => {
+    if (!searchQuery.trim()) return true;
+    
+    const query = searchQuery.toLowerCase();
+    return (
+      billboard.code.toLowerCase().includes(query) ||
+      billboard.name.toLowerCase().includes(query) ||
+      billboard.location.toLowerCase().includes(query)
+    );
+  });
+
   return (
     <div className="mb-8">
       {/* Header */}
@@ -92,12 +105,23 @@ const Billboard = () => {
         {/* Left: Billboard List */}
         <div className="w-full lg:w-[440px] lg:flex-shrink-0">
           <div className="space-y-3 sm:space-y-4 max-h-[400px] sm:max-h-[500px] lg:max-h-[747px] overflow-y-auto pr-2 scrollbar-hide">
-            {billboards.map((billboard) => (
-              <Card key={billboard.id} className="bg-white shadow-sm border border-gray-200">
+            {filteredBillboards.length === 0 ? (
+              <div className="text-center py-8">
+                <p className="text-gray-500 text-lg">No billboards found for "{searchQuery}"</p>
+              </div>
+            ) : (
+              filteredBillboards.map((billboard) => (
+              <Card 
+                key={billboard.id} 
+                className={`bg-white shadow-sm border border-gray-200 cursor-pointer transition-all duration-200 ${
+                  selectedBillboard?.id === billboard.id ? 'ring-2 ring-[#FD3D80] shadow-lg' : 'hover:shadow-md'
+                }`}
+                onClick={() => setSelectedBillboard(billboard)}
+              >
                 <CardHeader className="pb-3">
                   <div className="flex items-start justify-between">
                     <div className="flex items-start space-x-2 sm:space-x-3 flex-1 min-w-0">
-                      <Badge className="w-6 h-6 sm:w-8 sm:h-8 bg-red-500 text-white rounded-full flex items-center justify-center text-xs sm:text-sm font-medium flex-shrink-0">
+                      <Badge className="w-6 h-6 sm:w-8 sm:h-8 bg-[#FD3D80] text-white rounded-full flex items-center justify-center text-xs sm:text-sm font-medium flex-shrink-0">
                         {billboard.code}
                       </Badge>
                       <div className="flex-1 min-w-0">
@@ -111,7 +135,7 @@ const Billboard = () => {
                     </div>
                     <div className="flex space-x-1 sm:space-x-2 flex-shrink-0">
                       <button 
-                        className="p-1.5 sm:p-2 bg-gray-800 hover:bg-gray-900 rounded-full transition-colors cursor-pointer"
+                        className="p-1.5 sm:p-2 bg-[#09090B] hover:bg-gray-900 rounded-full transition-colors cursor-pointer"
                         onClick={() => addToCalculator({ 
                           id: billboard.id,
                           type: 'billboard', 
@@ -124,9 +148,9 @@ const Billboard = () => {
                       >
                         <img src="/icons/svg/bill-plus.svg" alt="Add" className="w-3 h-3 sm:w-4 sm:h-4" />
                       </button>
-                      <button className="p-1.5 sm:p-2 bg-gray-800 hover:bg-gray-900 rounded-full transition-colors cursor-pointer">
+                      {/* <button className="p-1.5 sm:p-2 bg-gray-800 hover:bg-gray-900 rounded-full transition-colors cursor-pointer">
                         <img src="/icons/svg/bill-more.svg" alt="More" className="w-3 h-3 sm:w-4 sm:h-4" />
-                      </button>
+                      </button> */}
                     </div>
                   </div>
                 </CardHeader>
@@ -163,7 +187,7 @@ const Billboard = () => {
                             key={filter}
                             className={`px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-medium transition-colors cursor-pointer ${
                               selectedTimeFilter === filter 
-                                ? 'bg-gray-800 text-white' 
+                                ? 'bg-[#09090B] text-white' 
                                 : 'bg-white text-gray-600 hover:text-gray-800 border border-gray-200'
                             }`}
                             onClick={() => setSelectedTimeFilter(filter)}
@@ -182,7 +206,8 @@ const Billboard = () => {
                   </p>
                 </CardFooter>
               </Card>
-            ))}
+            ))
+            )}
           </div>
         </div>
 
@@ -196,7 +221,11 @@ const Billboard = () => {
                     <div className="text-gray-500">Loading map...</div>
                   </div>
                 }>
-                  <Map billboards={billboards} key="billboard-map" />
+                  <Map 
+                    billboards={billboards} 
+                    selectedBillboard={selectedBillboard}
+                    key="billboard-map" 
+                  />
                 </Suspense>
               </div>
             </CardContent>

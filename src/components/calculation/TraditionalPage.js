@@ -27,7 +27,7 @@ const ErrorBoundary = ({ children, fallback }) => {
   return children;
 };
 
-const TraditionalPage = ({ selectedCategory }) => {
+const TraditionalPage = ({ selectedCategory, searchQuery = '' }) => {
   const renderContent = () => {
     switch (selectedCategory) {
       case 'all':
@@ -37,28 +37,28 @@ const TraditionalPage = ({ selectedCategory }) => {
               {/* TV Channels Section */}
               <ErrorBoundary>
                 <Suspense fallback={<div className="text-gray-500">Loading TV Channels...</div>}>
-                  <TVChannels />
+                  <TVChannels searchQuery={searchQuery} />
                 </Suspense>
               </ErrorBoundary>
               
               {/* OOH Section */}
               <ErrorBoundary>
                 <Suspense fallback={<div className="text-gray-500">Loading OOH...</div>}>
-                  <OOH />
+                  <OOH searchQuery={searchQuery} />
                 </Suspense>
               </ErrorBoundary>
               
               {/* Billboard Section */}
               <ErrorBoundary>
                 <Suspense fallback={<div className="text-gray-500">Loading Billboard...</div>}>
-                  <Billboard key={`billboard-${selectedCategory}`} />
+                  <Billboard key={`billboard-${selectedCategory}`} searchQuery={searchQuery} />
                 </Suspense>
               </ErrorBoundary>
               
               {/* Liftboard Section */}
               <ErrorBoundary>
                 <Suspense fallback={<div className="text-gray-500">Loading Liftboard...</div>}>
-                  <Liftboard />
+                  <Liftboard searchQuery={searchQuery} />
                 </Suspense>
               </ErrorBoundary>
             </div>
@@ -70,7 +70,7 @@ const TraditionalPage = ({ selectedCategory }) => {
             <div className="w-full px-4 sm:px-6 lg:px-8">
               <ErrorBoundary>
                 <Suspense fallback={<div className="text-gray-500">Loading TV Channels...</div>}>
-                  <TVChannels />
+                  <TVChannels searchQuery={searchQuery} />
                 </Suspense>
               </ErrorBoundary>
             </div>
@@ -82,7 +82,7 @@ const TraditionalPage = ({ selectedCategory }) => {
             <div className="w-full px-4 sm:px-6 lg:px-8">
               <ErrorBoundary>
                 <Suspense fallback={<div className="text-gray-500">Loading OOH...</div>}>
-                  <OOH />
+                  <OOH searchQuery={searchQuery} />
                 </Suspense>
               </ErrorBoundary>
             </div>
@@ -94,7 +94,7 @@ const TraditionalPage = ({ selectedCategory }) => {
             <div className="w-full px-4 sm:px-6 lg:px-8">
               <ErrorBoundary>
                 <Suspense fallback={<div className="text-gray-500">Loading Billboard...</div>}>
-                  <Billboard key={`billboard-${selectedCategory}`} />
+                  <Billboard key={`billboard-${selectedCategory}`} searchQuery={searchQuery} />
                 </Suspense>
               </ErrorBoundary>
             </div>
@@ -106,7 +106,7 @@ const TraditionalPage = ({ selectedCategory }) => {
             <div className="w-full px-4 sm:px-6 lg:px-8">
               <ErrorBoundary>
                 <Suspense fallback={<div className="text-gray-500">Loading Liftboard...</div>}>
-                  <Liftboard />
+                  <Liftboard searchQuery={searchQuery} />
                 </Suspense>
               </ErrorBoundary>
             </div>
