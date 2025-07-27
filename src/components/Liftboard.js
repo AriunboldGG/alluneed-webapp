@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, Suspense } from 'react';
-import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 
@@ -197,7 +197,7 @@ const Liftboard = ({ searchQuery = '' }) => {
           <div className="space-y-4 max-h-[600px] overflow-y-auto pr-2 scrollbar-hide">
             {filteredLiftboards.length === 0 ? (
               <div className="text-center py-8">
-                <p className="text-gray-500 text-lg">No liftboards found for "{searchQuery}"</p>
+                <p className="text-gray-500 text-lg">No liftboards found for &quot;{searchQuery}&quot;</p>
               </div>
             ) : (
               filteredLiftboards.map((liftboard) => (

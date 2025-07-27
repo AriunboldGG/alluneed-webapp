@@ -81,7 +81,7 @@ const News = ({ searchQuery = '' }) => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         {filteredChannels.length === 0 ? (
           <div className="col-span-full text-center py-8">
-            <p className="text-gray-500 text-lg">No news channels found for "{searchQuery}"</p>
+            <p className="text-gray-500 text-lg">No news channels found for &quot;{searchQuery}&quot;</p>
           </div>
         ) : (
           filteredChannels.map((channel) => (
