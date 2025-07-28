@@ -20,6 +20,7 @@ const CalculationModal = ({ isOpen, onClose, calculatorItems }) => {
   const oohItems = calculatorItems.filter(item => item.type === 'ooh');
   const billboardItems = calculatorItems.filter(item => item.type === 'billboard');
   const liftboardItems = calculatorItems.filter(item => item.type === 'liftboard');
+  const newspaperItems = calculatorItems.filter(item => item.type === 'newspaper');
 
   const totalItems = calculatorItems.length;
   const totalCost = calculatorItems.reduce((sum, item) => sum + (item.cost || 0), 0);
@@ -31,6 +32,7 @@ const CalculationModal = ({ isOpen, onClose, calculatorItems }) => {
   if (oohItems.length > 0) selectedCategories.ooh = true;
   if (billboardItems.length > 0) selectedCategories.billboard = true;
   if (liftboardItems.length > 0) selectedCategories.liftboard = true;
+  if (newspaperItems.length > 0) selectedCategories.newspaper = true;
 
   // Set default active tab based on available categories
   useEffect(() => {
@@ -44,6 +46,8 @@ const CalculationModal = ({ isOpen, onClose, calculatorItems }) => {
       setActiveTab('billboard');
     } else if (liftboardItems.length > 0) {
       setActiveTab('liftboard');
+    } else if (newspaperItems.length > 0) {
+      setActiveTab('newspaper');
     }
   }, [calculatorItems]);
 
@@ -294,6 +298,53 @@ const CalculationModal = ({ isOpen, onClose, calculatorItems }) => {
                 </div>
               </div>
             )}
+
+            {/* Newspaper Section */}
+            {newspaperItems.length > 0 && (
+              <div>
+                <h3 className="text-base sm:text-lg font-medium mb-3 sm:mb-4">Newspaper ({newspaperItems.length})</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
+                  {newspaperItems.map((item, index) => (
+                    <Card key={index}>
+                      <CardContent className="p-4">
+                        <div className="flex items-start justify-between mb-3">
+                          <div className="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center">
+                            📰
+                          </div>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="text-gray-500 hover:text-red-500 flex items-center gap-1"
+                            onClick={() => {/* Remove item logic */}}
+                          >
+                            <img src="/icons/svg/calc-clear.svg" alt="Clear" className="w-4 h-4" />
+                            Clear
+                          </Button>
+                        </div>
+                        <h4 className="font-medium mb-2">{item.name}</h4>
+                        <p className="text-sm text-gray-600 mb-3">{item.duration}</p>
+                        <div className="space-y-2 text-sm">
+                          <div className="flex justify-between">
+                            <span>Avg Views:</span>
+                            <span>{item.avgViews}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span>Cost:</span>
+                            <span>₮{item.cost?.toLocaleString()}</span>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                  <Card className="border-dashed border-2 border-gray-300 hover:border-gray-400 transition-colors cursor-pointer">
+                    <CardContent className="p-4 flex flex-col items-center justify-center h-full min-h-[200px]">
+                      <div className="text-3xl text-gray-400 mb-2">+</div>
+                      <p className="text-gray-600">Add more</p>
+                    </CardContent>
+                  </Card>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Right Column - Configuration */}
@@ -358,6 +409,18 @@ const CalculationModal = ({ isOpen, onClose, calculatorItems }) => {
                     }`}
                   >
                     Liftboard
+                  </button>
+                )}
+                {newspaperItems.length > 0 && (
+                  <button
+                    onClick={() => setActiveTab('newspaper')}
+                    className={`text-xs sm:text-sm font-medium pb-2 border-b-2 transition-colors whitespace-nowrap ${
+                      activeTab === 'newspaper' 
+                        ? 'text-gray-900 border-gray-900' 
+                        : 'text-gray-500 border-transparent hover:text-gray-700'
+                    }`}
+                  >
+                    Newspaper
                   </button>
                 )}
               </div>
@@ -430,21 +493,7 @@ const CalculationModal = ({ isOpen, onClose, calculatorItems }) => {
                         </Select>
                       </div>
 
-                      {/* Summary Row */}
-                      <div className="grid grid-cols-3 gap-4 p-4 bg-gray-50 rounded-lg">
-                        <div className="text-center">
-                          <div className="text-sm text-gray-600">Төлбөр</div>
-                          <div className="font-semibold">₮{totalCost.toLocaleString()}</div>
-                        </div>
-                        <div className="text-center">
-                          <div className="text-sm text-gray-600">Авч үзэлт</div>
-                          <div className="font-semibold">+{totalViews.toLocaleString()}</div>
-                        </div>
-                        <div className="text-center">
-                          <div className="text-sm text-gray-600">Хугацаа</div>
-                          <div className="font-semibold">6 мин</div>
-                        </div>
-                      </div>
+                     
                     </div>
                   </div>
                 )}
@@ -497,6 +546,26 @@ const CalculationModal = ({ isOpen, onClose, calculatorItems }) => {
                       {liftboardItems.map((item, index) => (
                         <Badge key={index} variant="secondary">
                           Liftboard ({item.name})
+                        </Badge>
+                      ))}
+                    </div>
+                    <div className="p-4 bg-gray-50 rounded-lg">
+                      <div className="text-center">
+                        <div className="text-sm text-gray-600">Нийт төлбөр / Views</div>
+                        <div className="font-semibold">₮{totalCost.toLocaleString()} / {totalViews.toLocaleString()}+</div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Newspaper Summary */}
+                {newspaperItems.length > 0 && (
+                  <div>
+                    <h4 className="font-medium mb-3">Newspaper</h4>
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {newspaperItems.map((item, index) => (
+                        <Badge key={index} variant="secondary">
+                          Newspaper ({item.name})
                         </Badge>
                       ))}
                     </div>
@@ -851,6 +920,94 @@ const CalculationModal = ({ isOpen, onClose, calculatorItems }) => {
                         <div className="text-center">
                           <div className="text-sm text-gray-600">Авч үзэлт</div>
                           <div className="font-semibold">+{liftboardItems.reduce((sum, item) => sum + (item.views || 0), 0).toLocaleString()}</div>
+                        </div>
+                        <div className="text-center">
+                          <div className="text-sm text-gray-600">Хугацаа</div>
+                          <div className="font-semibold">6 мин</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {activeTab === 'newspaper' && (
+              <div className="space-y-4 sm:space-y-6">
+                {/* Newspaper Configuration */}
+                {newspaperItems.length > 0 && (
+                  <div>
+                    <h4 className="font-medium mb-3">Newspaper</h4>
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {newspaperItems.map((item, index) => (
+                        <Badge key={index} variant="secondary">
+                          Newspaper ({item.name})
+                        </Badge>
+                      ))}
+                    </div>
+                    
+                    <div className="space-y-4">
+                      <div>
+                        <label className="text-sm font-medium mb-2 block">Реклам цацах цаг</label>
+                        <div className="flex gap-2">
+                          <Button
+                            variant={broadcastTime === '17:00-00:00' ? 'default' : 'outline'}
+                            size="sm"
+                            onClick={() => setBroadcastTime('17:00-00:00')}
+                          >
+                            17:00-00:00
+                          </Button>
+                          <Button
+                            variant={broadcastTime === 'other' ? 'default' : 'outline'}
+                            size="sm"
+                            onClick={() => setBroadcastTime('other')}
+                          >
+                            Бусад
+                          </Button>
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="text-sm font-medium mb-2 block">Цацах хоногын тоо</label>
+                        <Input
+                          placeholder="Type here"
+                          value={broadcastDays}
+                          onChange={(e) => setBroadcastDays(e.target.value)}
+                        />
+                      </div>
+
+                      <div>
+                        <label className="text-sm font-medium mb-2 block">Реклам цацах хугацаа</label>
+                        <Input
+                          placeholder="Type here"
+                          value={broadcastDuration}
+                          onChange={(e) => setBroadcastDuration(e.target.value)}
+                        />
+                      </div>
+
+                      <div>
+                        <label className="text-sm font-medium mb-2 block">Байршил</label>
+                        <Select value={location} onValueChange={setLocation}>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Сонгох" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="ulaanbaatar">Улаанбаатар</SelectItem>
+                            <SelectItem value="darkhan">Дархан</SelectItem>
+                            <SelectItem value="erdenet">Эрдэнэт</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      {/* Newspaper-specific Summary Row */}
+                      <div className="grid grid-cols-3 gap-4 p-4 bg-gray-50 rounded-lg">
+                        <div className="text-center">
+                          <div className="text-sm text-gray-600">Төлбөр</div>
+                          <div className="font-semibold">₮{newspaperItems.reduce((sum, item) => sum + (item.cost || 0), 0).toLocaleString()}</div>
+                        </div>
+                        <div className="text-center">
+                          <div className="text-sm text-gray-600">Авч үзэлт</div>
+                          <div className="font-semibold">+{newspaperItems.reduce((sum, item) => sum + (item.views || 0), 0).toLocaleString()}</div>
                         </div>
                         <div className="text-center">
                           <div className="text-sm text-gray-600">Хугацаа</div>

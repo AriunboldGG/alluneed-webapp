@@ -74,7 +74,7 @@ const Newspaper = ({ searchQuery = '' }) => {
       {/* Header */}
       <div className="px-4 sm:px-6 lg:px-8 mb-6">
         <div className="flex items-center space-x-3">
-          <img src="/icons/svg/newspaper.svg" alt="Newspaper" className="w-6 h-6" />
+          <img src="/icons/svg/earth.svg" alt="Newspaper" className="w-6 h-6" />
           <h2 className="text-2xl font-semibold text-gray-900">Newspaper</h2>
         </div>
       </div>

@@ -4,8 +4,10 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { addToCalculator } from '@/lib/calculator';
+import ViewModal from './ViewModal';
 
 const News = ({ searchQuery = '' }) => {
+  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
 
   const newsChannels = [
     {
@@ -95,7 +97,10 @@ const News = ({ searchQuery = '' }) => {
                   </div>
                   
                   {/* Button */}
-                  <Button className="w-full bg-white border border-gray-300 text-[#09090B] hover:bg-[#09090B] hover:text-white transition-colors rounded-[999px] cursor-pointer">
+                  <Button 
+                    onClick={() => setIsViewModalOpen(true)}
+                    className="w-full bg-white border border-gray-300 text-[#09090B] hover:bg-[#09090B] hover:text-white transition-colors rounded-[999px] cursor-pointer"
+                  >
                     View detail
                   </Button>
                 </div>
@@ -104,6 +109,21 @@ const News = ({ searchQuery = '' }) => {
           )}
         </div>
       </div>
+
+      {/* View Modal */}
+      <ViewModal 
+        isOpen={isViewModalOpen}
+        onClose={() => setIsViewModalOpen(false)}
+        calculatorItems={newsChannels.map(channel => ({
+          id: channel.id,
+          type: 'news',
+          name: channel.name,
+          cost: parseInt(channel.avgViews.replace(/[^0-9]/g, '')) * 1000, // Convert views to cost
+          views: parseInt(channel.avgViews.replace(/[^0-9]/g, '')),
+          duration: channel.duration,
+          brand: channel.brand
+        }))}
+      />
     </div>
   );
 };
