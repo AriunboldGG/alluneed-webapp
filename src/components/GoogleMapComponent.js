@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef } from 'react';
 
-const GoogleMapComponent = ({ liftboards = [], selectedLiftboard = null, center = { lat: 47.9184, lng: 106.9177 }, zoom = 13 }) => {
+const GoogleMapComponent = ({ liftboards = [], selectedLiftboard = null, billboards = [], selectedBillboard = null, center = { lat: 47.9184, lng: 106.9177 }, zoom = 13 }) => {
   const mapRef = useRef(null);
   const mapInstanceRef = useRef(null);
   const markersRef = useRef([]);
@@ -37,35 +37,56 @@ const GoogleMapComponent = ({ liftboards = [], selectedLiftboard = null, center 
     markersRef.current.forEach(marker => marker.setMap(null));
     markersRef.current = [];
 
-    // Add markers for each liftboard
-    liftboards.forEach((liftboard) => {
+    // Add markers for liftboards or billboards
+    const items = liftboards.length > 0 ? liftboards : billboards;
+    const selectedItem = selectedLiftboard || selectedBillboard;
+
+    items.forEach((item) => {
       const marker = new window.google.maps.Marker({
-        position: liftboard.coordinates,
+        position: item.coordinates,
         map: mapInstanceRef.current,
-        title: liftboard.name,
+        title: item.name,
         icon: {
           path: window.google.maps.SymbolPath.CIRCLE,
           scale: 8,
-          fillColor: '#EF4444',
+          fillColor: billboards.length > 0 ? '#FD3D80' : '#EF4444',
           fillOpacity: 1,
           strokeColor: '#FFFFFF',
           strokeWeight: 2
         }
       });
 
-      // Create info window
-      const infoWindow = new window.google.maps.InfoWindow({
-        content: `
+      // Create info window content based on item type
+      let infoContent = '';
+      if (billboards.length > 0) {
+        // Billboard info window
+        infoContent = `
           <div style="padding: 8px; max-width: 200px;">
-            <h3 style="margin: 0 0 4px 0; font-weight: 600; color: #111827;">${liftboard.name}</h3>
-            <p style="margin: 0 0 4px 0; font-size: 12px; color: #6B7280;">${liftboard.location}</p>
+            <h3 style="margin: 0 0 4px 0; font-weight: 600; color: #111827;">${item.name}</h3>
+            <p style="margin: 0 0 4px 0; font-size: 12px; color: #6B7280;">${item.location}</p>
             <div style="font-size: 11px; color: #9CA3AF;">
-              <p style="margin: 2px 0;">Code: ${liftboard.code}</p>
-              <p style="margin: 2px 0;">Views: +${liftboard.views}</p>
-              <p style="margin: 2px 0;">${liftboard.price}</p>
+              <p style="margin: 2px 0;">Code: ${item.code}</p>
+              <p style="margin: 2px 0;">Views: +${item.views}</p>
+              <p style="margin: 2px 0;">${item.costPerView}</p>
             </div>
           </div>
-        `
+        `;
+      } else {
+        // Liftboard info window
+        infoContent = `
+          <div style="padding: 8px; max-width: 200px;">
+            <h3 style="margin: 0 0 4px 0; font-weight: 600; color: #111827;">${item.name}</h3>
+            <p style="margin: 0 0 4px 0; font-size: 12px; color: #6B7280;">${item.location}</p>
+            <div style="font-size: 11px; color: #9CA3AF;">
+              <p style="margin: 2px 0;">Code: ${item.code}</p>
+              <p style="margin: 2px 0;">Audience: ${item.audience}</p>
+            </div>
+          </div>
+        `;
+      }
+
+      const infoWindow = new window.google.maps.InfoWindow({
+        content: infoContent
       });
 
       // Add click listener
@@ -81,34 +102,55 @@ const GoogleMapComponent = ({ liftboards = [], selectedLiftboard = null, center 
       markersRef.current.forEach(marker => marker.setMap(null));
       markersRef.current = [];
     };
-  }, [liftboards, center, zoom]);
+  }, [liftboards, billboards, center, zoom]);
 
-  // Handle selected liftboard navigation
+  // Handle selected item navigation
   useEffect(() => {
-    if (selectedLiftboard && mapInstanceRef.current) {
-      // Find the marker for the selected liftboard
-      const markerIndex = liftboards.findIndex(lb => lb.id === selectedLiftboard.id);
+    const selectedItem = selectedLiftboard || selectedBillboard;
+    if (selectedItem && mapInstanceRef.current) {
+      // Find the marker for the selected item
+      const items = liftboards.length > 0 ? liftboards : billboards;
+      const markerIndex = items.findIndex(item => item.id === selectedItem.id);
       if (markerIndex !== -1 && markersRef.current[markerIndex]) {
         const marker = markersRef.current[markerIndex];
         
         // Pan to the marker with smooth animation
-        mapInstanceRef.current.panTo(selectedLiftboard.coordinates);
+        mapInstanceRef.current.panTo(selectedItem.coordinates);
         
         // Set zoom level for better visibility
         mapInstanceRef.current.setZoom(15);
         
-        // Open info window for the selected marker
-        const infoWindow = new window.google.maps.InfoWindow({
-          content: `
+        // Create info window content based on item type
+        let infoContent = '';
+        if (billboards.length > 0) {
+          // Billboard info window
+          infoContent = `
             <div style="padding: 8px; max-width: 200px;">
-              <h3 style="margin: 0 0 4px 0; font-weight: 600; color: #111827;">${selectedLiftboard.name}</h3>
-              <p style="margin: 0 0 4px 0; font-size: 12px; color: #6B7280;">${selectedLiftboard.location}</p>
+              <h3 style="margin: 0 0 4px 0; font-weight: 600; color: #111827;">${selectedItem.name}</h3>
+              <p style="margin: 0 0 4px 0; font-size: 12px; color: #6B7280;">${selectedItem.location}</p>
               <div style="font-size: 11px; color: #9CA3AF;">
-                <p style="margin: 2px 0;">Code: ${selectedLiftboard.code}</p>
-                <p style="margin: 2px 0;">Audience: ${selectedLiftboard.audience}</p>
+                <p style="margin: 2px 0;">Code: ${selectedItem.code}</p>
+                <p style="margin: 2px 0;">Views: +${selectedItem.views}</p>
+                <p style="margin: 2px 0;">${selectedItem.costPerView}</p>
               </div>
             </div>
-          `
+          `;
+        } else {
+          // Liftboard info window
+          infoContent = `
+            <div style="padding: 8px; max-width: 200px;">
+              <h3 style="margin: 0 0 4px 0; font-weight: 600; color: #111827;">${selectedItem.name}</h3>
+              <p style="margin: 0 0 4px 0; font-size: 12px; color: #6B7280;">${selectedItem.location}</p>
+              <div style="font-size: 11px; color: #9CA3AF;">
+                <p style="margin: 2px 0;">Code: ${selectedItem.code}</p>
+                <p style="margin: 2px 0;">Audience: ${selectedItem.audience}</p>
+              </div>
+            </div>
+          `;
+        }
+        
+        const infoWindow = new window.google.maps.InfoWindow({
+          content: infoContent
         });
         
         infoWindow.open(mapInstanceRef.current, marker);
@@ -119,7 +161,7 @@ const GoogleMapComponent = ({ liftboards = [], selectedLiftboard = null, center 
         }, 3000);
       }
     }
-  }, [selectedLiftboard, liftboards]);
+  }, [selectedLiftboard, selectedBillboard, liftboards, billboards]);
 
   return (
     <div 

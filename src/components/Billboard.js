@@ -6,8 +6,8 @@ import { Badge } from '@/components/ui/badge';
 import dynamic from 'next/dynamic';
 import { addToCalculator } from '@/lib/calculator';
 
-// Dynamically import Map component to avoid SSR issues
-const Map = dynamic(() => import('./Map'), {
+// Dynamically import GoogleMapComponent to avoid SSR issues
+const GoogleMapComponent = dynamic(() => import('./GoogleMapComponent'), {
   ssr: false,
   loading: () => (
     <div className="w-full h-full bg-gray-100 flex items-center justify-center">
@@ -29,10 +29,10 @@ const Billboard = ({ searchQuery = '' }) => {
       name: 'Метромалл их дэлгүүр',
       location: 'Сүхбаатарын талбайн баруун талд / СБД / Энхтайваны өргөн чөлөө / Зүүн хойд',
       views: '30,000',
-      costPerView: '₮5,000 = 1 view',
+      costPerView: '₮150,000 = 1 view',
       emptyImage: '/images/bill1.png',
       adImage: '/images/bill2.png',
-      coordinates: [47.9184, 106.9177]
+      coordinates: { lat: 47.9184, lng: 106.9177 }
     },
     {
       id: 2,
@@ -40,10 +40,10 @@ const Billboard = ({ searchQuery = '' }) => {
       name: 'Энхтайван их дэлгүүр',
       location: 'Энхтайваны өргөн чөлөө / СБД / Баянзүрх дүүрэг / Баруун хойд',
       views: '25,000',
-      costPerView: '₮4,500 = 1 view',
+      costPerView: '₮120,000 = 1 view',
       emptyImage: '/images/bill1.png',
       adImage: '/images/bill2.png',
-      coordinates: [47.9200, 106.9200]
+      coordinates: { lat: 47.9200, lng: 106.9200 }
     },
     {
       id: 3,
@@ -51,10 +51,10 @@ const Billboard = ({ searchQuery = '' }) => {
       name: 'Гэмтэл сансрын төв',
       location: 'Чингис хааны өргөн чөлөө / ХЗД / Хан-Уул дүүрэг / Төв',
       views: '35,000',
-      costPerView: '₮6,200 = 1 view',
+      costPerView: '₮180,000 = 1 view',
       emptyImage: '/images/bill1.png',
       adImage: '/images/bill2.png',
-      coordinates: [47.9150, 106.9150]
+      coordinates: { lat: 47.9150, lng: 106.9150 }
     },
     {
       id: 4,
@@ -62,10 +62,10 @@ const Billboard = ({ searchQuery = '' }) => {
       name: 'Их Дэлгүүр',
       location: 'Их Дэлгүүрийн гудамж / БЗД / Баянзүрх дүүрэг / Зүүн',
       views: '20,000',
-      costPerView: '₮3,800 = 1 view',
+      costPerView: '₮100,000 = 1 view',
       emptyImage: '/images/bill1.png',
       adImage: '/images/bill2.png',
-      coordinates: [47.9250, 106.9250]
+      coordinates: { lat: 47.9250, lng: 106.9250 }
     },
     {
       id: 5,
@@ -73,10 +73,10 @@ const Billboard = ({ searchQuery = '' }) => {
       name: 'Ханбүргэдийн төв',
       location: 'Ханбүргэдийн гудамж / ХЗД / Хан-Уул дүүрэг / Баруун',
       views: '28,000',
-      costPerView: '₮5,500 = 1 view',
+      costPerView: '₮140,000 = 1 view',
       emptyImage: '/images/bill1.png',
       adImage: '/images/bill2.png',
-      coordinates: [47.9100, 106.9100]
+      coordinates: { lat: 47.9100, lng: 106.9100 }
     }
   ];
 
@@ -91,6 +91,29 @@ const Billboard = ({ searchQuery = '' }) => {
       billboard.location.toLowerCase().includes(query)
     );
   });
+
+  const GoogleMap = () => {
+    // Check if Google Maps API key is available
+    const hasGoogleMapsAPI = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
+    
+    if (hasGoogleMapsAPI) {
+      return <GoogleMapComponent billboards={billboards} selectedBillboard={selectedBillboard} />;
+    }
+    
+    return (
+      <div className="w-full h-full bg-gray-100 rounded-lg flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 mx-auto mb-4 bg-gray-200 rounded-full flex items-center justify-center">
+            <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-1.447-.894L15 4m0 13V4m-6 3l6-3" />
+            </svg>
+          </div>
+          <p className="text-lg font-medium text-gray-500">Google Maps</p>
+          <p className="text-sm text-gray-400">API key required</p>
+        </div>
+      </div>
+    );
+  };
 
   return (
     <div className="mb-8">
@@ -211,7 +234,7 @@ const Billboard = ({ searchQuery = '' }) => {
           </div>
         </div>
 
-        {/* Right: Map */}
+        {/* Right: Google Map */}
         <div className="w-full lg:flex-1">
           <Card className="bg-white shadow-sm border border-gray-200 p-0">
             <CardContent className="p-0 m-0">
@@ -221,11 +244,7 @@ const Billboard = ({ searchQuery = '' }) => {
                     <div className="text-gray-500">Loading map...</div>
                   </div>
                 }>
-                  <Map 
-                    billboards={billboards} 
-                    selectedBillboard={selectedBillboard}
-                    key="billboard-map" 
-                  />
+                  <GoogleMap />
                 </Suspense>
               </div>
             </CardContent>

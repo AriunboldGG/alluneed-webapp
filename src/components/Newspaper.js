@@ -17,8 +17,8 @@ const Newspaper = ({ searchQuery = '' }) => {
       avatar: '/images/news/news.png',
       avgViews: '+50,000',
       pricingOptions: [
-        { id: 'front', label: 'Front Page', price: '₮60,000', selected: true },
-        { id: 'inside', label: 'Inside Page', price: '₮40,000', selected: false }
+        { id: 'front', label: 'Front Page', price: '₮80,000', selected: true },
+        { id: 'inside', label: 'Inside Page', price: '₮50,000', selected: false }
       ]
     },
     {
@@ -27,8 +27,8 @@ const Newspaper = ({ searchQuery = '' }) => {
       avatar: '/images/news/news.png',
       avgViews: '+45,000',
       pricingOptions: [
-        { id: 'front', label: 'Front Page', price: '₮55,000', selected: true },
-        { id: 'inside', label: 'Inside Page', price: '₮35,000', selected: false }
+        { id: 'front', label: 'Front Page', price: '₮70,000', selected: true },
+        { id: 'inside', label: 'Inside Page', price: '₮45,000', selected: false }
       ]
     },
     {
@@ -37,8 +37,8 @@ const Newspaper = ({ searchQuery = '' }) => {
       avatar: '/images/news/news.png',
       avgViews: '+40,000',
       pricingOptions: [
-        { id: 'front', label: 'Front Page', price: '₮50,000', selected: true },
-        { id: 'inside', label: 'Inside Page', price: '₮30,000', selected: false }
+        { id: 'front', label: 'Front Page', price: '₮60,000', selected: true },
+        { id: 'inside', label: 'Inside Page', price: '₮40,000', selected: false }
       ]
     },
     {
@@ -47,8 +47,8 @@ const Newspaper = ({ searchQuery = '' }) => {
       avatar: '/images/news/news.png',
       avgViews: '+35,000',
       pricingOptions: [
-        { id: 'front', label: 'Front Page', price: '₮45,000', selected: true },
-        { id: 'inside', label: 'Inside Page', price: '₮25,000', selected: false }
+        { id: 'front', label: 'Front Page', price: '₮50,000', selected: true },
+        { id: 'inside', label: 'Inside Page', price: '₮35,000', selected: false }
       ]
     }
   ];

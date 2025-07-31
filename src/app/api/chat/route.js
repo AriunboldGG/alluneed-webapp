@@ -3,30 +3,64 @@ import { NextResponse } from 'next/server';
 export async function POST(request) {
   try {
     const { messages, chatId } = await request.json();
+    
+    console.log('API received:', { messages, chatId });
 
     // Validate input
     if (!messages || !Array.isArray(messages)) {
+      console.log('Invalid messages format:', messages);
       return NextResponse.json(
         { error: 'Invalid messages format' },
         { status: 400 }
       );
     }
 
-    // Check if OpenAI API key is available
-    if (!process.env.OPENAI_API_KEY) {
+    // Check if OpenAI API key is available (or force mock responses for testing)
+    if (!process.env.OPENAI_API_KEY || true) { // Force mock responses for now
       // Mock response for testing
       const lastMessage = messages[messages.length - 1];
+      const userQuestion = lastMessage.content;
+      
+      // Check for specific Mongolian questions and provide predefined answers
+      console.log('Checking question:', userQuestion);
+      
+      if (userQuestion.includes("Монголын хамгийн өндөр үзэлттэй телевизийн суваг юу вэ?")) {
+        console.log('Matched question 1');
+        return NextResponse.json({
+          message: "Монголын хамгийн олон үзэгчтэй суваг бол Боловсрол ТВ бөгөөд Оргил цагаар өдөрт дунджаар 351,549 хэрэглэгч үздэг ба бусад цагаар өдөрт дунджаар 158,658 хэрэглэгч үздэг. Гэхдээ тухайн ТВ-ээр гарч буй Шоу нэвтрүүлэг Кино зэргээс хамааран бусад сувгийн үзэлт илүү өндөр болох тохиолдлууд байдаг.",
+          chatId: chatId
+        });
+      }
+      
+      if (userQuestion.includes("Төв талбайн урд байрлах нийслэл дэлгэцийг хэдэн хүн үздэг вэ?")) {
+        console.log('Matched question 2');
+        return NextResponse.json({
+          message: "Нийслэл дэлгэцийн урдуур өдөрт дунджаар 85,156 автомашин, 38,598 явган зорчигч өнгөрдөг ба тэдний 65 орчим хувь нь буюу 80,674 орчим нь дэлгэцэн дээр тоглогдож буй дүрсийг хардаг. Хэрэв та энэхүү дэлгэцэн дээр сурталчилгаа байршуулахаар төлөвлөж байгаа бол 15 хүртэлх сек-ын урттай видеог өдрийн 420 удаагийн давтамжтай өгөхөд тохиромжтой",
+          chatId: chatId
+        });
+      }
+      
+      if (userQuestion.includes("Та маркетингийн төлөвлөгөө боловсруулж чадах уу?")) {
+        console.log('Matched question 3');
+        return NextResponse.json({
+          message: "Тиймээ чадна гэхдээ төлөвлөгөө боловсруулахын өмнө таниас хэдэн зүйлсийг тодруулах шаардлагатай та хариулахад бэлэн үү?",
+          chatId: chatId
+        });
+      }
+      
+      // Default mock responses for other questions
+      console.log('No specific match found, using random response');
       const mockResponses = [
-        "Hello! I'm your AI assistant. How can I help you today?",
-        "That's an interesting question! Let me think about that...",
-        "I understand what you're asking. Here's what I can tell you about that topic.",
-        "Great question! Based on what you've shared, here's my response.",
-        "I'm here to help! What specific information are you looking for?",
-        "Thanks for reaching out! I'd be happy to assist you with that.",
-        "That's a good point. Let me provide you with some helpful information.",
-        "I see what you mean. Here's what I think about that...",
-        "Interesting perspective! Here's my take on the matter.",
-        "I'm glad you asked! Here's what I can share with you."
+        "Сайн байна! Би танд туслахад бэлэн байна. Та юу асуух хүсэлтэй байна вэ?",
+        "Энэ сонирхолтой асуулт байна! Би танд туслаж үзье.",
+        "Би таны асуултыг ойлголоо. Энэ сэдвээр танд мэдээлэл өгье.",
+        "Сайн асуулт! Би танд туслаж чадна.",
+        "Би энд байна! Та ямар мэдээлэл хайж байна вэ?",
+        "Асуултад баярлалаа! Би танд туслахад баяртай байна.",
+        "Сайн зөвлөгөө! Би танд хэрэгтэй мэдээлэл өгье.",
+        "Би таны санааг ойлголоо. Энэ талаар тайлбарлая.",
+        "Сонирхолтой үзэл бодол! Би өөрийн бодлыг хуваалцъя.",
+        "Асуултад баярлалаа! Би танд мэдээлэл өгье."
       ];
       
       const randomResponse = mockResponses[Math.floor(Math.random() * mockResponses.length)];

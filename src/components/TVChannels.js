@@ -18,7 +18,7 @@ const TVChannels = ({ searchQuery = '' }) => {
       platforms: ['Sansar', 'Univision', 'Skymedia', 'Voo'],
       additionalPlatforms: 12,
       avgViews: '30,000',
-      costPerView: '₮5,000 = 1 View',
+      costPerView: '₮150,000 = 1 View',
       isActive: true
     },
     {
@@ -28,7 +28,7 @@ const TVChannels = ({ searchQuery = '' }) => {
       platforms: ['Platform 1', 'Platform 2', 'Platform 3'],
       additionalPlatforms: 8,
       avgViews: '25,000',
-      costPerView: '₮4,500 = 1 View',
+      costPerView: '₮120,000 = 1 View',
       isActive: false
     },
     {
@@ -38,7 +38,7 @@ const TVChannels = ({ searchQuery = '' }) => {
       platforms: ['Platform 1', 'Platform 2'],
       additionalPlatforms: 5,
       avgViews: '20,000',
-      costPerView: '₮3,800 = 1 View',
+      costPerView: '₮100,000 = 1 View',
       isActive: false
     },
     {
@@ -48,7 +48,7 @@ const TVChannels = ({ searchQuery = '' }) => {
       platforms: ['Platform 1', 'Platform 2', 'Platform 3', 'Platform 4'],
       additionalPlatforms: 15,
       avgViews: '35,000',
-      costPerView: '₮6,200 = 1 View',
+      costPerView: '₮180,000 = 1 View',
       isActive: false
     }
   ];

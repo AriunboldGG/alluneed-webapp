@@ -54,14 +54,17 @@ const AIChatPage = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ message: inputMessage }),
+        body: JSON.stringify({ 
+          messages: [{ role: 'user', content: inputMessage }],
+          chatId: Date.now()
+        }),
       });
 
       const data = await response.json();
       
       const aiMessage = {
         id: Date.now() + 1,
-        text: data.response,
+        text: data.message,
         sender: 'ai',
         timestamp: new Date().toLocaleTimeString()
       };
@@ -208,48 +211,38 @@ const AIChatPage = () => {
               </div>
               <h2 className="text-2xl font-bold text-gray-900 mb-2">Welcome to AI Chat</h2>
               <p className="text-gray-600 mb-6 max-w-md">
-                I&apos;m here to help you with any questions about advertising, media planning, or campaign strategies.
+              Сайн байна уу? Та Монголын маркетингийн салбарын нэгдсэн системд холбогдлоо. Танд туслахад бэлэн.
               </p>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-2xl w-full">
+              <div className="grid grid-cols-1 gap-4 max-w-3xl w-full">
                 <button
                   onClick={() => {
-                    setInputMessage("What are the best advertising channels for a new product launch?");
+                    setInputMessage("Монголын хамгийн өндөр үзэлттэй телевизийн суваг юу вэ?");
                     inputRef.current?.focus();
                   }}
                   className="p-4 text-left border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
                 >
-                  <div className="font-medium text-gray-900 mb-1">Product Launch</div>
-                  <div className="text-sm text-gray-600">Get advice on advertising channels for new products</div>
+                  <div className="font-medium text-gray-900 mb-1">Монголын хамгийн өндөр үзэлттэй телевизийн суваг юу вэ?</div>
+                  <div className="text-sm text-gray-600">Монгол улсад хамгийн өндөр үзэгчдийн тоотой телевизийн сувгийг олж мэдэх</div>
                 </button>
                 <button
                   onClick={() => {
-                    setInputMessage("How do I calculate ROI for my advertising campaign?");
+                    setInputMessage("Төв талбайн урд байрлах нийслэл дэлгэцийг хэдэн хүн үздэг вэ?");
                     inputRef.current?.focus();
                   }}
                   className="p-4 text-left border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
                 >
-                  <div className="font-medium text-gray-900 mb-1">ROI Calculation</div>
-                  <div className="text-sm text-gray-600">Learn how to measure campaign performance</div>
+                  <div className="font-medium text-gray-900 mb-1">Төв талбайн урд байрлах нийслэл дэлгэцийг хэдэн хүн үздэг вэ?                  </div>
+                  <div className="text-sm text-gray-600">Төв талбайн нийслэлийн дэлгэцийн үзэгчдийн тооны талаар мэдэх</div>
                 </button>
                 <button
                   onClick={() => {
-                    setInputMessage("What&apos;s the difference between traditional and digital advertising?");
+                    setInputMessage("Та маркетингийн төлөвлөгөө боловсруулж чадах уу?");
                     inputRef.current?.focus();
                   }}
                   className="p-4 text-left border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
                 >
-                  <div className="font-medium text-gray-900 mb-1">Media Types</div>
-                  <div className="text-sm text-gray-600">Understand different advertising channels</div>
-                </button>
-                <button
-                  onClick={() => {
-                    setInputMessage("How do I create an effective advertising budget?");
-                    inputRef.current?.focus();
-                  }}
-                  className="p-4 text-left border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
-                >
-                  <div className="font-medium text-gray-900 mb-1">Budget Planning</div>
-                  <div className="text-sm text-gray-600">Plan your advertising budget effectively</div>
+                  <div className="font-medium text-gray-900 mb-1">Чи маркетинг төлөвлөгөө боловсруулж чадах уу?                  </div>
+                  <div className="text-sm text-gray-600">Цогц маркетингийн стратеги бүтээхэд тусламж авах</div>
                 </button>
               </div>
             </div>

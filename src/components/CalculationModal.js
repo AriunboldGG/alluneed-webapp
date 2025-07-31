@@ -103,14 +103,8 @@ const CalculationModal = ({ isOpen, onClose, calculatorItems }) => {
                           {item.providers?.join(' · ')} +12
                         </p>
                         <div className="flex gap-2 mb-3">
-                          <Badge variant={item.timeFilter === 'one-day' ? 'default' : 'secondary'}>
-                            One day
-                          </Badge>
-                          <Badge variant={item.timeFilter === 'one-week' ? 'default' : 'secondary'}>
-                            One week
-                          </Badge>
-                          <Badge variant={item.timeFilter === 'one-month' ? 'default' : 'secondary'}>
-                            One month
+                          <Badge variant="default">
+                            {item.timeFilter || 'One day'}
                           </Badge>
                         </div>
                         <div className="text-center mb-3">

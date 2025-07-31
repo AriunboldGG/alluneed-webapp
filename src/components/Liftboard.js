@@ -48,8 +48,8 @@ const Liftboard = ({ searchQuery = '' }) => {
       coordinates: { lat: 47.9184, lng: 106.9177 },
       category: 'commercial',
       pricingOptions: [
-        { id: 'poster', label: 'Poster', price: '₮40,000', selected: true },
-        { id: 'ledtv', label: 'Led TV', price: '₮80,000', selected: false }
+        { id: 'poster', label: 'Poster', price: '₮25,000', selected: true },
+        { id: 'ledtv', label: 'Led TV', price: '₮45,000', selected: false }
       ]
     },
     {
@@ -61,8 +61,8 @@ const Liftboard = ({ searchQuery = '' }) => {
       coordinates: { lat: 47.9200, lng: 106.9200 },
       category: 'commercial',
       pricingOptions: [
-        { id: 'poster', label: 'Poster', price: '₮35,000', selected: true },
-        { id: 'ledtv', label: 'Led TV', price: '₮70,000', selected: false }
+        { id: 'poster', label: 'Poster', price: '₮20,000', selected: true },
+        { id: 'ledtv', label: 'Led TV', price: '₮40,000', selected: false }
       ]
     },
     {
@@ -74,8 +74,8 @@ const Liftboard = ({ searchQuery = '' }) => {
       coordinates: { lat: 47.9150, lng: 106.9150 },
       category: 'commercial',
       pricingOptions: [
-        { id: 'poster', label: 'Poster', price: '₮45,000', selected: true },
-        { id: 'ledtv', label: 'Led TV', price: '₮90,000', selected: false }
+        { id: 'poster', label: 'Poster', price: '₮30,000', selected: true },
+        { id: 'ledtv', label: 'Led TV', price: '₮55,000', selected: false }
       ]
     },
     {
@@ -87,8 +87,8 @@ const Liftboard = ({ searchQuery = '' }) => {
       coordinates: { lat: 47.9250, lng: 106.9250 },
       category: 'commercial',
       pricingOptions: [
-        { id: 'poster', label: 'Poster', price: '₮30,000', selected: true },
-        { id: 'ledtv', label: 'Led TV', price: '₮60,000', selected: false }
+        { id: 'poster', label: 'Poster', price: '₮15,000', selected: true },
+        { id: 'ledtv', label: 'Led TV', price: '₮35,000', selected: false }
       ]
     },
     {
@@ -100,8 +100,8 @@ const Liftboard = ({ searchQuery = '' }) => {
       coordinates: { lat: 47.9100, lng: 106.9100 },
       category: 'commercial',
       pricingOptions: [
-        { id: 'poster', label: 'Poster', price: '₮38,000', selected: true },
-        { id: 'ledtv', label: 'Led TV', price: '₮76,000', selected: false }
+        { id: 'poster', label: 'Poster', price: '₮22,000', selected: true },
+        { id: 'ledtv', label: 'Led TV', price: '₮42,000', selected: false }
       ]
     }
   ];
