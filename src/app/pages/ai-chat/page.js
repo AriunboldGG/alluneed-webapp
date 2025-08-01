@@ -77,6 +77,8 @@ const AIChatPage = () => {
       if (data.showModal && data.modalData) {
         setMarketingData(data.modalData);
         setShowMarketingModal(true);
+        console.log('Frontend received modal data:', data.modalData);
+        console.log('Modal should be visible now');
       }
       
       const aiMessage = {
@@ -357,14 +359,14 @@ const AIChatPage = () => {
       )}
 
       {/* AI Marketing Plan Modal */}
-      {showMarketingModal && (
-        <AIMarketingPlanModal
-          marketingData={marketingData}
-          onClose={() => setShowMarketingModal(false)}
-        >
-          <div className="hidden">Trigger</div>
-        </AIMarketingPlanModal>
-      )}
+      <AIMarketingPlanModal
+        marketingData={marketingData}
+        onClose={() => setShowMarketingModal(false)}
+        isOpen={showMarketingModal}
+        setIsOpen={setShowMarketingModal}
+      >
+        <div className="hidden">Trigger</div>
+      </AIMarketingPlanModal>
     </div>
   );
 };

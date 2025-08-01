@@ -35,11 +35,9 @@ const LOCATION_REACH_DATA = [
   { name: 'Бусад', views: 5 }
 ];
 
-const AIMarketingPlanModal = ({ marketingData, children, onClose }) => {
-  const [isOpen, setIsOpen] = useState(false);
-
+const AIMarketingPlanModal = ({ marketingData, children, onClose, isOpen, setIsOpen }) => {
   const handleClose = () => {
-    setIsOpen(false);
+    if (setIsOpen) setIsOpen(false);
     if (onClose) onClose();
   };
 
