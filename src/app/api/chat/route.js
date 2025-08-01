@@ -2,9 +2,9 @@ import { NextResponse } from 'next/server';
 
 export async function POST(request) {
   try {
-    const { messages, chatId } = await request.json();
+    const { messages, chatId, conversationState: requestConversationState } = await request.json();
     
-    console.log('API received:', { messages, chatId });
+    console.log('API received:', { messages, chatId, conversationState: requestConversationState });
 
     // Validate input
     if (!messages || !Array.isArray(messages)) {
@@ -14,6 +14,8 @@ export async function POST(request) {
         { status: 400 }
       );
     }
+
+    let conversationState = requestConversationState || {};
 
     // Check if OpenAI API key is available (or force mock responses for testing)
     if (!process.env.OPENAI_API_KEY || true) { // Force mock responses for now
@@ -42,9 +44,72 @@ export async function POST(request) {
       
       if (userQuestion.includes("Та маркетингийн төлөвлөгөө боловсруулж чадах уу?")) {
         console.log('Matched question 3');
+        // Initialize conversation state for marketing plan
+        conversationState.step = 'marketing_plan_init';
+        conversationState.answers = {};
+        
         return NextResponse.json({
           message: "Тиймээ чадна гэхдээ төлөвлөгөө боловсруулахын өмнө таниас хэдэн зүйлсийг тодруулах шаардлагатай та хариулахад бэлэн үү?",
-          chatId: chatId
+          chatId: chatId,
+          conversationState: conversationState
+        });
+      }
+
+      // Handle marketing plan conversation flow
+      if (conversationState.step === 'marketing_plan_init' && userQuestion.toLowerCase().includes('тийм')) {
+        conversationState.step = 'question_1';
+        return NextResponse.json({
+          message: "1. Таны төлөвлөгөөний зорилго",
+          chatId: chatId,
+          conversationState: conversationState
+        });
+      }
+
+      if (conversationState.step === 'question_1') {
+        conversationState.answers.goal = userQuestion;
+        conversationState.step = 'question_2';
+        return NextResponse.json({
+          message: "2. Таны зорилтод хэрэглэгчид (тоогоор бичнэ үү)",
+          chatId: chatId,
+          conversationState: conversationState
+        });
+      }
+
+      if (conversationState.step === 'question_2') {
+        conversationState.answers.targetUsers = userQuestion;
+        conversationState.step = 'question_3';
+        return NextResponse.json({
+          message: "3. Таны үйл ажиллагааны чиглэл",
+          chatId: chatId,
+          conversationState: conversationState
+        });
+      }
+
+      if (conversationState.step === 'question_3') {
+        conversationState.answers.businessDirection = userQuestion;
+        conversationState.step = 'question_4';
+        return NextResponse.json({
+          message: "4. Таны боломжит маркетингийн төсөв (₮ тоогоор бичнэ үү)",
+          chatId: chatId,
+          conversationState: conversationState
+        });
+      }
+
+      if (conversationState.step === 'question_4') {
+        conversationState.answers.budget = userQuestion;
+        conversationState.step = 'completed';
+        return NextResponse.json({
+          message: "Баярлалаа таны төлөвлөгөө бэлэн боллоо",
+          chatId: chatId,
+          conversationState: conversationState,
+          showModal: true,
+          modalData: {
+            type: 'marketing_plan',
+            budget: conversationState.answers.budget,
+            goal: conversationState.answers.goal,
+            targetUsers: conversationState.answers.targetUsers,
+            businessDirection: conversationState.answers.businessDirection
+          }
         });
       }
       

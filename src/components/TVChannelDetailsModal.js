@@ -43,9 +43,9 @@ const TVChannelDetailsModal = ({ channel, children }) => {
   
   // Calculation state
   const [calculatedMetrics, setCalculatedMetrics] = useState({
-    totalReach: 120000,
-    costPerPerson: 35000,
-    totalCost: 4200000,
+    totalReach: 1200,
+    costPerPerson: 3500,
+    totalCost: 42000,
     tvComparison: '2%'
   });
 
@@ -54,8 +54,8 @@ const TVChannelDetailsModal = ({ channel, children }) => {
   // Calculation function
   const calculateMetrics = useCallback(() => {
     // Base values from channel data
-    const baseViews = parseInt(channel?.avgViews?.replace(',', '') || '30000');
-    const baseCost = parseInt(channel?.costPerView?.match(/₮([\d,]+)/)?.[1]?.replace(',', '') || '5000');
+    const baseViews = parseInt(channel?.avgViews?.replace(',', '') || '3000');
+    const baseCost = parseInt(channel?.costPerView?.match(/₮([\d,]+)/)?.[1]?.replace(',', '') || '500');
     
     // Multipliers based on selections
     const timeMultiplier = advertisingTime === '17:00 - 00:00' ? 1.2 : 1.0;
@@ -74,9 +74,9 @@ const TVChannelDetailsModal = ({ channel, children }) => {
     };
     const locationMultiplier = locationMultipliers[selectedLocation] || 1.0;
     
-    // Calculate new metrics
-    const newTotalReach = Math.round(baseViews * timeMultiplier * frequencyMultiplier * daysMultiplier * locationMultiplier);
-    const newCostPerPerson = Math.round(baseCost * durationMultiplier);
+    // Calculate new metrics and divide by 100 for reasonable numbers
+    const newTotalReach = Math.round((baseViews * timeMultiplier * frequencyMultiplier * daysMultiplier * locationMultiplier) / 100);
+    const newCostPerPerson = Math.round((baseCost * durationMultiplier) / 100);
     const newTotalCost = newTotalReach * newCostPerPerson;
     const newTvComparison = Math.round((newTotalReach / baseViews) * 100);
     

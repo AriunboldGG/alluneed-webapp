@@ -3,12 +3,16 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import AIMarketingPlanModal from '@/components/AIMarketingPlanModal';
 
 const AIChatPage = () => {
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [showMarketingModal, setShowMarketingModal] = useState(false);
+  const [marketingData, setMarketingData] = useState({});
+  const [conversationState, setConversationState] = useState({});
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
 
@@ -56,11 +60,24 @@ const AIChatPage = () => {
         },
         body: JSON.stringify({ 
           messages: [{ role: 'user', content: inputMessage }],
-          chatId: Date.now()
+          chatId: Date.now(),
+          conversationState: conversationState
         }),
       });
 
       const data = await response.json();
+      
+      // Update conversation state if provided
+      if (data.conversationState) {
+        setConversationState(data.conversationState);
+        localStorage.setItem(`chat_${data.chatId}`, JSON.stringify(data.conversationState));
+      }
+
+      // Handle modal display
+      if (data.showModal && data.modalData) {
+        setMarketingData(data.modalData);
+        setShowMarketingModal(true);
+      }
       
       const aiMessage = {
         id: Date.now() + 1,
@@ -337,6 +354,16 @@ const AIChatPage = () => {
           className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
           onClick={() => setIsSidebarOpen(false)}
         />
+      )}
+
+      {/* AI Marketing Plan Modal */}
+      {showMarketingModal && (
+        <AIMarketingPlanModal
+          marketingData={marketingData}
+          onClose={() => setShowMarketingModal(false)}
+        >
+          <div className="hidden">Trigger</div>
+        </AIMarketingPlanModal>
       )}
     </div>
   );
