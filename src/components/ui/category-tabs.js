@@ -13,8 +13,8 @@ const CategoryTabs = ({
   const getTabStyles = () => {
     if (variant === "pill") {
       return {
-        list: "bg-[#F4F4F5] p-1 h-auto gap-2 border-none rounded-[999px] w-full overflow-x-auto flex-nowrap max-[425px]:overflow-x-auto min-[425px]:overflow-visible",
-                  trigger: "rounded-[999px] px-4 py-2 text-sm font-medium data-[state=active]:bg-white data-[state=active]:text-[#09090B] data-[state=active]:shadow-sm data-[state=active]:border-2 data-[state=active]:border-[#F4F4F5] border-none bg-transparent text-[#52525C] hover:bg-white/50 whitespace-nowrap flex-shrink-0 cursor-pointer"
+        list: "bg-[#F4F4F5] p-1 h-auto gap-3 border-none rounded-[999px] w-full overflow-x-auto flex-nowrap max-[425px]:overflow-x-auto min-[425px]:overflow-visible justify-center",
+        trigger: "rounded-[999px] px-6 py-3 text-sm font-medium data-[state=active]:bg-white data-[state=active]:text-[#09090B] data-[state=active]:shadow-sm data-[state=active]:border-2 data-[state=active]:border-[#F4F4F5] border-none bg-transparent text-[#52525C] hover:bg-white/50 whitespace-nowrap flex-shrink-0 cursor-pointer transition-all duration-200"
       }
     }
     
@@ -38,7 +38,7 @@ const CategoryTabs = ({
           >
             <span>{category.label}</span>
             {category.count !== undefined && (
-              <span className="ml-2 inline-flex items-center justify-center w-5 h-5 text-xs font-medium bg-gray-200 text-gray-700 rounded-full">
+              <span className="ml-2 inline-flex items-center justify-center w-6 h-6 text-xs font-medium bg-gray-300 text-gray-700 rounded-full">
                 {category.count}
               </span>
             )}

@@ -4,6 +4,7 @@ import React from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import AgencyDetailsModal from '../AgencyDetailsModal';
 
 const AgencyPage = ({ selectedCategory }) => {
   // Sample data for agencies
@@ -209,9 +210,11 @@ const AgencyPage = ({ selectedCategory }) => {
 
                 {/* Action Buttons */}
                 <div className="flex space-x-2 w-full">
-                  <button className="flex-1 bg-white border border-gray-300 text-gray-700 px-3 py-2 rounded-lg text-sm font-medium hover:bg-[#09090B] hover:text-white transition-colors cursor-pointer">
-                    View details
-                  </button>
+                  <AgencyDetailsModal agency={agency}>
+                    <button className="flex-1 bg-white border border-gray-300 text-gray-700 px-3 py-2 rounded-lg text-sm font-medium hover:bg-[#09090B] hover:text-white transition-colors cursor-pointer">
+                      View details
+                    </button>
+                  </AgencyDetailsModal>
                   <button className="flex-1 bg-white border border-gray-300 text-gray-700 px-3 py-2 rounded-lg text-sm font-medium hover:bg-[#09090B] hover:text-white transition-colors flex items-center justify-center space-x-1 cursor-pointer">
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />

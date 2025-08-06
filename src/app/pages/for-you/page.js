@@ -5,6 +5,7 @@ import { CategoryTabs } from '@/components/ui/category-tabs';
 import Events from '@/components/Events';
 import Campaigns from '@/components/Campaigns';
 import News from '@/components/News';
+import AiTools from '@/components/AiTools';
 import { useSearch } from '@/hooks/useSearch';
 
 const ForYouPage = () => {
@@ -140,7 +141,54 @@ const ForYouPage = () => {
     }
   ];
 
-  const allContent = [...events, ...campaigns, ...news];
+  const aiTools = [
+    {
+      id: 'ai-tool-1',
+      title: 'Jasper.ai',
+      coreStrength: 'Scalable, branded copywriting',
+      bestUseCase: 'Blogs, ads, emails, social posts',
+      description: 'AI-powered content creation platform for marketing teams',
+      image: '/images/ai-tools/jasper.png',
+      category: 'ai-tools',
+      website: 'https://jasper.ai',
+      features: ['Brand Voice', 'Multi-language', 'SEO Optimization', 'Team Collaboration']
+    },
+    {
+      id: 'ai-tool-2',
+      title: 'Surfer SEO',
+      coreStrength: 'Data-driven content optimization',
+      bestUseCase: 'SEO-optimized content production',
+      description: 'Content optimization tool that helps create SEO-friendly content',
+      image: '/images/ai-tools/surfer.png',
+      category: 'ai-tools',
+      website: 'https://surferseo.com',
+      features: ['Keyword Research', 'Content Editor', 'Site Audit', 'Rank Tracking']
+    },
+    {
+      id: 'ai-tool-3',
+      title: 'Albert.ai',
+      coreStrength: 'Autonomous campaign automation',
+      bestUseCase: 'Cross-channel ad strategy & optimization',
+      description: 'AI marketing platform for autonomous digital advertising',
+      image: '/images/ai-tools/albert.png',
+      category: 'ai-tools',
+      website: 'https://albert.ai',
+      features: ['Campaign Automation', 'Cross-channel', 'Real-time Optimization', 'Predictive Analytics']
+    },
+    {
+      id: 'ai-tool-4',
+      title: 'Gumloop',
+      coreStrength: 'Visual workflow automation',
+      bestUseCase: 'Automating marketing tasks & tools',
+      description: 'No-code automation platform for marketing workflows',
+      image: '/images/ai-tools/gumloop.png',
+      category: 'ai-tools',
+      website: 'https://gumloop.com',
+      features: ['Visual Builder', 'Integrations', 'Workflow Automation', 'Analytics']
+    }
+  ];
+
+  const allContent = [...events, ...campaigns, ...news, ...aiTools];
 
   // Filter content based on search query
   const filterContent = (content) => {
@@ -159,6 +207,7 @@ const ForYouPage = () => {
   const filteredEvents = filterContent(events);
   const filteredCampaigns = filterContent(campaigns);
   const filteredNews = filterContent(news);
+  const filteredAiTools = filterContent(aiTools);
 
   // Listen for search events
   useEffect(() => {
@@ -178,7 +227,8 @@ const ForYouPage = () => {
     { value: 'all', label: 'All', count: allContent.length },
     { value: 'events', label: 'Events', count: events.length },
     { value: 'campaigns', label: 'Campaigns', count: campaigns.length },
-    { value: 'news', label: 'News', count: news.length }
+    { value: 'news', label: 'News', count: news.length },
+    { value: 'ai-tools', label: 'AI Tools', count: aiTools.length }
   ];
 
   return (
@@ -188,7 +238,7 @@ const ForYouPage = () => {
 
       {/* Centered Tabs */}
       <div className="flex justify-center mb-12 mt-4">
-        <div className="w-full max-w-md">
+        <div className="w-full max-w-4xl px-4">
           <CategoryTabs
             value={activeTab}
             onValueChange={setActiveTab}
@@ -204,12 +254,14 @@ const ForYouPage = () => {
           <Events events={filteredEvents} />
           <Campaigns campaigns={filteredCampaigns} />
           <News news={filteredNews} />
+          <AiTools aiTools={filteredAiTools} />
         </>
       )}
       
       {activeTab === 'events' && <Events events={filteredEvents} />}
       {activeTab === 'campaigns' && <Campaigns campaigns={filteredCampaigns} />}
       {activeTab === 'news' && <News news={filteredNews} />}
+      {activeTab === 'ai-tools' && <AiTools aiTools={filteredAiTools} />}
 
 
     </div>
