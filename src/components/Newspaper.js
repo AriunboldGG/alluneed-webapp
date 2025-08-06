@@ -1,8 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card';
 import { addToCalculator } from '@/lib/calculator';
 
 const Newspaper = ({ searchQuery = '' }) => {
@@ -72,16 +71,32 @@ const Newspaper = ({ searchQuery = '' }) => {
   return (
     <div className="mb-8">
       {/* Header */}
-      <div className="px-4 sm:px-6 lg:px-8 mb-6">
-        <div className="flex items-center space-x-3">
-          <img src="/icons/svg/earth.svg" alt="Newspaper" className="w-6 h-6" />
+      <div className="mb-6">
+        <div className="flex items-center space-x-3 mb-4">
+          <input type="checkbox" className="w-4 h-4 text-black border-gray-300 rounded focus:ring-black" />
           <h2 className="text-2xl font-semibold text-gray-900">Newspaper</h2>
+        </div>
+        
+        {/* Time Filter Buttons */}
+        <div className="inline-flex bg-white rounded-full p-1">
+          {timeFilters.map((filter) => (
+            <button
+              key={filter}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors cursor-pointer ${
+                selectedTimeFilter === filter 
+                  ? 'bg-gray-100 text-gray-800' 
+                  : 'bg-white text-gray-600 hover:text-gray-800'
+              }`}
+              onClick={() => setSelectedTimeFilter(filter)}
+            >
+              {filter}
+            </button>
+          ))}
         </div>
       </div>
 
-      {/* Newspapers Grid */}
-      <div className="px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      {/* Newspaper Cards Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {filteredNewspapers.length === 0 ? (
           <div className="col-span-full text-center py-8">
             <p className="text-gray-500 text-lg">No newspapers found for &quot;{searchQuery}&quot;</p>
@@ -112,20 +127,22 @@ const Newspaper = ({ searchQuery = '' }) => {
               </CardHeader>
 
               <CardContent className="space-y-4">
-                {/* Time Filters */}
-                <div className="flex space-x-2">
-                  {timeFilters.map((filter) => (
-                    <Button
-                      key={filter}
-                      variant={selectedTimeFilter === filter ? "default" : "outline"}
-                      size="sm"
-                      onClick={() => setSelectedTimeFilter(filter)}
-                      className="text-xs cursor-pointer"
-                    >
-                      {filter}
-                    </Button>
-                  ))}
-                </div>
+                                 {/* Time Filters */}
+                 <div className="flex space-x-2">
+                   {timeFilters.map((filter) => (
+                     <button
+                       key={filter}
+                       className={`px-3 py-1 rounded-full text-xs font-medium transition-colors cursor-pointer ${
+                         selectedTimeFilter === filter 
+                           ? 'bg-[#09090B] text-white' 
+                           : 'bg-white text-gray-600 border border-gray-300 hover:bg-gray-50'
+                       }`}
+                       onClick={() => setSelectedTimeFilter(filter)}
+                     >
+                       {filter}
+                     </button>
+                   ))}
+                 </div>
 
                 {/* Average Views */}
                 <div className="text-center">
@@ -169,40 +186,36 @@ const Newspaper = ({ searchQuery = '' }) => {
                   })}
                 </div>
 
-                {/* Action Buttons */}
-                <div className="flex space-x-2 pt-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="flex-1 rounded-[999px] bg-white text-[#09090B] border-gray-200 hover:bg-[#09090B] hover:text-white cursor-pointer"
-                  >
-                    View details
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => addToCalculator({
-                      id: newspaper.id,
-                      type: 'newspaper',
-                      name: newspaper.name,
-                      duration: selectedTimeFilter,
-                      pricingOptions: newspaper.pricingOptions,
-                      selectedOptions: selectedOptions[newspaper.id] || {}
-                    })}
-                    className="flex-1 rounded-[999px] bg-white text-[#09090B] border-gray-200 hover:bg-[#09090B] hover:text-white cursor-pointer"
-                  >
-                    + Add
-                  </Button>
-                </div>
-              </CardContent>
+                               </CardContent>
+
+               <CardFooter>
+                 <div className="flex space-x-2 w-full">
+                   <button className="flex-1 bg-white border border-gray-300 text-[#09090B] px-4 py-2 rounded-[999px] text-base font-medium leading-6 tracking-normal hover:bg-[#09090B] hover:text-white transition-colors cursor-pointer">
+                     View details
+                   </button>
+                   <button 
+                     className="flex-1 bg-white border border-gray-300 text-[#09090B] px-4 py-2 rounded-[999px] text-base font-medium leading-6 tracking-normal hover:bg-[#09090B] hover:text-white transition-colors cursor-pointer flex items-center justify-center space-x-2"
+                     onClick={() => addToCalculator({
+                       id: newspaper.id,
+                       type: 'newspaper',
+                       name: newspaper.name,
+                       duration: selectedTimeFilter,
+                       pricingOptions: newspaper.pricingOptions,
+                       selectedOptions: selectedOptions[newspaper.id] || {}
+                     })}
+                   >
+                     <img src="/icons/svg/plus.svg" alt="Add" className="w-5 h-5" />
+                     <span>Add</span>
+                   </button>
+                 </div>
+               </CardFooter>
             </Card>
           ))
         )}
-        </div>
       </div>
 
       {/* Show More Button */}
-      <div className="flex items-center">
+      <div className="flex items-center mt-8">
         <div className="flex-1 h-px bg-gray-200 mr-4"></div>
         <button className="bg-white border border-gray-300 text-gray-700 px-6 py-3 rounded-[999px] font-medium hover:bg-[#09090B] hover:text-white transition-colors cursor-pointer">
           Show more

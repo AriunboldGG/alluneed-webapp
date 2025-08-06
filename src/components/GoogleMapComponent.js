@@ -49,7 +49,9 @@ const GoogleMapComponent = ({ liftboards = [], selectedLiftboard = null, billboa
         icon: {
           path: window.google.maps.SymbolPath.CIRCLE,
           scale: 8,
-          fillColor: billboards.length > 0 ? '#FD3D80' : '#EF4444',
+          fillColor: billboards.length > 0 
+            ? (item.color === 'green' ? '#10B981' : item.color === 'orange' ? '#F97316' : '#FD3D80') 
+            : '#EF4444',
           fillOpacity: 1,
           strokeColor: '#FFFFFF',
           strokeWeight: 2

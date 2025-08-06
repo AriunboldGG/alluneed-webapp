@@ -192,47 +192,54 @@ const DigitalPage = ({ selectedCategory, searchQuery = '' }) => {
               </CardHeader>
               
               <CardContent className="pb-4">
-                {/* Statistics in Single Row */}
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center space-x-2">
-                    <div className="w-4 h-4 bg-gray-200 rounded flex items-center justify-center">
-                      <svg className="w-3 h-3 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                      </svg>
+                {/* Statistics Section - Fully Responsive Design */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3">
+                  {/* Followers */}
+                  <div>
+                    <label className="text-xs md:text-sm font-medium text-gray-700 block mb-1">Followers</label>
+                    <div className="border border-[#E4E4E7] rounded-full px-2 py-2 flex items-center space-x-1 md:space-x-2">
+                      <img src="/icons/svg/users.svg" alt="Users" className="w-3 h-3 md:w-4 md:h-4" />
+                      <span className="text-xs md:text-sm font-medium">{channel.followers}</span>
                     </div>
-                    <span className="text-sm font-medium">{channel.followers}</span>
                   </div>
-                  <div className="flex items-center space-x-2">
-                    <div className="w-4 h-4 bg-gray-200 rounded flex items-center justify-center">
-                      <svg className="w-3 h-3 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                      </svg>
+
+                  {/* Daily Reach */}
+                  <div>
+                    <label className="text-xs md:text-sm font-medium text-gray-700 block mb-1">Followers</label>
+                    <div className="border border-[#E4E4E7] rounded-full px-2 py-2 flex items-center justify-between">
+                      <div className="flex items-center space-x-1">
+                        <img src="/icons/svg/sun.svg" alt="Daily" className="w-3 h-3 md:w-4 md:h-4" />
+                        <span className="text-xs">Өдөрт</span>
+                      </div>
+                      <div className="flex items-center space-x-1">
+                        <img src="/icons/svg/eye.svg" alt="Views" className="w-3 h-3 md:w-4 md:h-4" />
+                        <span className="text-xs">{channel.dailyReach}</span>
+                      </div>
                     </div>
-                    <span className="text-sm">Өдөрт {channel.dailyReach}</span>
                   </div>
-                  <div className="flex items-center space-x-2">
-                    <div className="w-4 h-4 bg-gray-200 rounded flex items-center justify-center">
-                      <svg className="w-3 h-3 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                      </svg>
+
+                  {/* Engagement Rate */}
+                  <div>
+                    <label className="text-xs md:text-sm font-medium text-gray-700 block mb-1">Enagagement rate</label>
+                    <div className="border border-[#E4E4E7] rounded-full px-2 py-2 flex items-center space-x-1 md:space-x-2">
+                      <img src="/icons/svg/rate.svg" alt="Rate" className="w-3 h-3 md:w-4 md:h-4" />
+                      <span className="text-xs md:text-sm">{channel.engagementRate}</span>
                     </div>
-                    <span className="text-sm">{channel.engagementRate}</span>
                   </div>
-                  <div className="flex items-center space-x-2">
-                    <div className="w-4 h-4 bg-gray-200 rounded flex items-center justify-center">
-                      <svg className="w-3 h-3 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                      </svg>
+
+                  {/* Fake Followers */}
+                  <div>
+                    <label className="text-xs md:text-sm font-medium text-gray-700 block mb-1">Fake followers</label>
+                    <div className="border border-[#E4E4E7] rounded-full px-2 py-2 flex items-center justify-between">
+                      <div className="flex items-center space-x-1">
+                        <img src="/icons/svg/fake-awesome.svg" alt="Fake" className="w-3 h-3 md:w-4 md:h-4" />
+                        <span className="text-xs">{channel.fakeFollowers}</span>
+                      </div>
+                      <div className="flex items-center space-x-1">
+                        <img src="/icons/svg/fake-bot.svg" alt="Bot" className="w-3 h-3 md:w-4 md:h-4" />
+                        <span className="text-xs">{channel.fakeFollowersCount}</span>
+                      </div>
                     </div>
-                    <span className="text-sm">{channel.fakeFollowers}</span>
-                    <div className="w-3 h-3 bg-gray-200 rounded flex items-center justify-center">
-                      <svg className="w-2 h-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                      </svg>
-                    </div>
-                    <span className="text-sm">{channel.fakeFollowersCount}</span>
                   </div>
                 </div>
 
