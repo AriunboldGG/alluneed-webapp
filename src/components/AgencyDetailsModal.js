@@ -167,26 +167,47 @@ const AgencyDetailsModal = ({ agency, children }) => {
             </CardContent>
           </Card>
 
-          {/* Sample Work */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-xl font-semibold text-gray-900">Sample Work</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {[1, 2, 3, 4, 5, 6].map((item) => (
-                  <div key={item} className="aspect-square bg-gray-200 rounded-lg flex items-center justify-center">
-                    <div className="text-center">
-                      <svg className="w-12 h-12 text-gray-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                      </svg>
-                      <p className="text-sm text-gray-500">Project {item}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
+                     {/* Sample Work */}
+           <Card>
+             <CardHeader>
+               <CardTitle className="text-xl font-semibold text-gray-900">Sample Work</CardTitle>
+             </CardHeader>
+             <CardContent>
+               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                 {[
+                   { id: 1, image: '/images/camp1.png', title: 'Campaign 1' },
+                   { id: 2, image: '/images/camp2.png', title: 'Campaign 2' },
+                   { id: 3, image: '/images/camp3.png', title: 'Campaign 3' },
+                   { id: 4, image: '/images/camp4.png', title: 'Campaign 4' },
+                   { id: 5, image: '/images/camp1.png', title: 'Campaign 5' },
+                   { id: 6, image: '/images/camp2.png', title: 'Campaign 6' }
+                 ].map((item) => (
+                   <div key={item.id} className="aspect-square bg-gray-100 rounded-lg overflow-hidden hover:shadow-lg transition-shadow cursor-pointer">
+                     <img 
+                       src={item.image} 
+                       alt={item.title}
+                       className="w-full h-full object-cover"
+                       onError={(e) => {
+                         e.target.style.display = 'none';
+                         e.target.nextSibling.style.display = 'flex';
+                       }}
+                     />
+                     <div 
+                       className="w-full h-full flex items-center justify-center bg-gray-200"
+                       style={{ display: 'none' }}
+                     >
+                       <div className="text-center">
+                         <svg className="w-12 h-12 text-gray-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                         </svg>
+                         <p className="text-sm text-gray-500">{item.title}</p>
+                       </div>
+                     </div>
+                   </div>
+                 ))}
+               </div>
+             </CardContent>
+           </Card>
 
           {/* Contact & Action */}
           <Card>
